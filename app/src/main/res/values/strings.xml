@@ -1,3 +1,48 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Bitcoin Fear &amp; Tilt</string>
+    <string name="cant_show_content">Can\'t show content</string>
+    <string name="current_price">Current Price</string>
+    <string name="change_label">%1$s Change</string>
+    <string name="fear_greed_index">Fear &amp; Greed Index</string>
+    <string name="extreme_fear">EXTREME FEAR</string>
+    <string name="fear">FEAR</string>
+    <string name="neutral">NEUTRAL</string>
+    <string name="greed">GREED</string>
+    <string name="extreme_greed">EXTREME GREED</string>
+    <string name="settings_button">SETTINGS</string>
+    <string name="refresh_button">REFRESH</string>
+    <string name="settings_console">SETTINGS CONSOLE</string>
+    <string name="apply_save">Apply &amp; Save</string>
+    <string name="reset_defaults">Reset Defaults</string>
+    <string name="color_mapping_direction">COLOR MAPPING DIRECTION</string>
+    <string name="up_green">UP = GREEN</string>
+    <string name="up_red">UP = RED</string>
+    <string name="widget_background">WIDGET BACKGROUND</string>
+    <string name="solid_color">SOLID COLOR</string>
+    <string name="transparent">TRANSPARENT</string>
+    <string name="tilt_base_timeframe">TILT BASE TIMEFRAME</string>
+    <string name="timeframe_30m">30 MINS</string>
+    <string name="timeframe_24h">24 HOURS</string>
+    <string name="timeframe_start_of_day">MIDNIGHT</string>
+    <string name="sensitivity_k">SENSITIVITY (K)</string>
+    <string name="sensitivity_description">Multiplier for mapping price change % to rotation angle.</string>
+    <string name="speed_threshold_x">SPEED THRESHOLD (X%)</string>
+    <string name="speed_description">Triggers fast cart mode if price change % is above this value.</string>
+    <string name="fear_greed_thresholds">FEAR &amp; GREED THRESHOLDS</string>
+    <string name="extreme_fear_max">Extreme Fear Max</string>
+    <string name="fear_max">Fear Max</string>
+    <string name="neutral_max">Neutral Max</string>
+    <string name="greed_max">Greed Max</string>
+    <string name="extreme_greed_max">Extreme Greed Max</string>
+    <string name="language_label">LANGUAGE</string>
+    <string name="lang_en">ENGLISH</string>
+    <string name="lang_ru">RUSSIAN</string>
+    
+    <!-- New keys for Main and Widget -->
+    <string name="bitcoin_label">BITCOIN</string>
+    <string name="fear_tilt_system">FEAR &amp; TILT SYSTEM</string>
+    <string name="widget_fng">F&amp;G: %1$d</string>
+    <string name="refresh_data">Refresh Data</string>
+    <string name="settings_desc">Settings</string>
+    <string name="tilted_cart">Tilted Cart</string>
 </resources>

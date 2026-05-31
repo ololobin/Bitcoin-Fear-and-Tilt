@@ -52,6 +52,19 @@ dependencies {
     implementation(libs.androidx.glance.material3)
     implementation(libs.okhttp)
     implementation(libs.androidx.work.runtime.ktx)
+    
+    // API & JSON
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.gson)
+    
+    // Preferences DataStore
+    implementation(libs.androidx.datastore.preferences)
+
+    // Icons
+    implementation("androidx.compose.material:material-icons-core")
+    implementation("androidx.compose.material:material-icons-extended")
+
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)

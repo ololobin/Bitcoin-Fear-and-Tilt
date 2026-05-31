@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Bitcoin Fear &amp; Tilt</string>
+    <string name="cant_show_content">Не удается показать содержимое</string>
+    <string name="current_price">Текущая цена</string>
+    <string name="change_label">Изменение за %1$s</string>
+    <string name="fear_greed_index">Индекс страха и жадности</string>
+    <string name="extreme_fear">ЧРЕЗВЫЧАЙНЫЙ СТРАХ</string>
+    <string name="fear">СТРАХ</string>
+    <string name="neutral">НЕЙТРАЛЬНО</string>
+    <string name="greed">ЖАДНОСТЬ</string>
+    <string name="extreme_greed">ЧРЕЗВЫЧАЙНАЯ ЖАДНОСТЬ</string>
+    <string name="settings_button">НАСТРОЙКИ</string>
+    <string name="refresh_button">ОБНОВИТЬ</string>
+    <string name="settings_console">ПАНЕЛЬ НАСТРОЕК</string>
+    <string name="apply_save">Применить и сохранить</string>
+    <string name="reset_defaults">Сбросить настройки</string>
+    <string name="color_mapping_direction">НАПРАВЛЕНИЕ ЦВЕТА</string>
+    <string name="up_green">РОСТ = ЗЕЛЕНЫЙ</string>
+    <string name="up_red">РОСТ = КРАСНЫЙ</string>
+    <string name="widget_background">ФОН ВИДЖЕТА</string>
+    <string name="solid_color">СПЛОШНОЙ</string>
+    <string name="transparent">ПРОЗРАЧНЫЙ</string>
+    <string name="tilt_base_timeframe">ПЕРИОД НАКЛОНА</string>
+    <string name="timeframe_30m">30 МИНУТ</string>
+    <string name="timeframe_24h">24 ЧАСА</string>
+    <string name="timeframe_start_of_day">ПОЛУНОЧЬ</string>
+    <string name="sensitivity_k">ЧУВСТВИТЕЛЬНОСТЬ (K)</string>
+    <string name="sensitivity_description">Множитель для перевода % изменения цены в угол поворота.</string>
+    <string name="speed_threshold_x">ПОРОГ СКОРОСТИ (X%)</string>
+    <string name="speed_description">Активирует режим быстрой тележки, если % изменения цены выше этого значения.</string>
+    <string name="fear_greed_thresholds">ПОРОГИ СТРАХА И ЖАДНОСТИ</string>
+    <string name="extreme_fear_max">Макс Чрезвычайного страха</string>
+    <string name="fear_max">Макс Страха</string>
+    <string name="neutral_max">Макс Нейтрального</string>
+    <string name="greed_max">Макс Жадности</string>
+    <string name="extreme_greed_max">Макс Чрезвычайной жадности</string>
+    <string name="language_label">ЯЗЫК</string>
+    <string name="lang_en">ENGLISH</string>
+    <string name="lang_ru">РУССКИЙ</string>
+    
+    <!-- New keys for Main and Widget -->
+    <string name="bitcoin_label">БИТКОИН</string>
+    <string name="fear_tilt_system">СИСТЕМА СТРАХА И НАКЛОНА</string>
+    <string name="widget_fng">Индекс: %1$d</string>
+    <string name="refresh_data">Обновить данные</string>
+    <string name="settings_desc">Настройки</string>
+    <string name="tilted_cart">Наклоненная тележка</string>
+</resources>
