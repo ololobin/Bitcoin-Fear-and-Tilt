@@ -37,6 +37,9 @@
     <string name="language_label">ЯЗЫК</string>
     <string name="lang_en">ENGLISH</string>
     <string name="lang_ru">РУССКИЙ</string>
+    <string name="lang_es">ИСПАНСКИЙ</string>
+    <string name="lang_zh">КИТАЙСКИЙ</string>
+    <string name="lang_fr">ФРАНЦУЗСКИЙ</string>
     
     <!-- New keys for Main and Widget -->
     <string name="bitcoin_label">БИТКОИН</string>
@@ -45,4 +48,8 @@
     <string name="refresh_data">Обновить данные</string>
     <string name="settings_desc">Настройки</string>
     <string name="tilted_cart">Наклоненная тележка</string>
+    
+    <!-- Donation -->
+    <string name="support_developer">ПОДДЕРЖАТЬ РАЗРАБОТЧИКА</string>
+    <string name="address_copied">Адрес скопирован в буфер обмена</string>
 </resources>

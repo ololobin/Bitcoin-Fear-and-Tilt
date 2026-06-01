@@ -37,6 +37,9 @@
     <string name="language_label">LANGUAGE</string>
     <string name="lang_en">ENGLISH</string>
     <string name="lang_ru">RUSSIAN</string>
+    <string name="lang_es">ESPAÑOL</string>
+    <string name="lang_zh">中文</string>
+    <string name="lang_fr">FRANÇAIS</string>
     
     <!-- New keys for Main and Widget -->
     <string name="bitcoin_label">BITCOIN</string>
@@ -45,4 +48,8 @@
     <string name="refresh_data">Refresh Data</string>
     <string name="settings_desc">Settings</string>
     <string name="tilted_cart">Tilted Cart</string>
+    
+    <!-- Donation -->
+    <string name="support_developer">SUPPORT DEVELOPER</string>
+    <string name="address_copied">Address copied to clipboard</string>
 </resources>

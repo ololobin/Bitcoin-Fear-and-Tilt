@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bitcoin Fear &amp; Tilt</string>
+    <string name="cant_show_content">No se puede mostrar el contenido</string>
+    <string name="current_price">Precio Actual</string>
+    <string name="change_label">Cambio en %1$s</string>
+    <string name="fear_greed_index">Índice de Miedo y Codicia</string>
+    <string name="extreme_fear">MIEDO EXTREMO</string>
+    <string name="fear">MIEDO</string>
+    <string name="neutral">NEUTRAL</string>
+    <string name="greed">CODICIA</string>
+    <string name="extreme_greed">CODICIA EXTREMA</string>
+    <string name="settings_button">AJUSTES</string>
+    <string name="refresh_button">ACTUALIZAR</string>
+    <string name="settings_console">CONSOLA DE AJUSTES</string>
+    <string name="apply_save">Aplicar y Guardar</string>
+    <string name="reset_defaults">Restablecer</string>
+    <string name="color_mapping_direction">DIRECCIÓN DE COLOR</string>
+    <string name="up_green">SUBIDA = VERDE</string>
+    <string name="up_red">SUBIDA = ROJO</string>
+    <string name="widget_background">FONDO DEL WIDGET</string>
+    <string name="solid_color">COLOR SÓLIDO</string>
+    <string name="transparent">TRANSPARENTE</string>
+    <string name="tilt_base_timeframe">PERÍODO BASE</string>
+    <string name="timeframe_30m">30 MINUTOS</string>
+    <string name="timeframe_24h">24 HORAS</string>
+    <string name="timeframe_start_of_day">MEDIANOCHE</string>
+    <string name="sensitivity_k">SENSIBILIDAD (K)</string>
+    <string name="sensitivity_description">Multiplicador para mapear el % de cambio de precio al ángulo de rotación.</string>
+    <string name="speed_threshold_x">UMBRAL DE VELOCIDAD (X%)</string>
+    <string name="speed_description">Activa el modo de carro rápido si el % de cambio de precio está por encima de este valor.</string>
+    <string name="fear_greed_thresholds">UMBRALES DE MIEDO Y CODICIA</string>
+    <string name="extreme_fear_max">Máx Miedo Extremo</string>
+    <string name="fear_max">Máx Miedo</string>
+    <string name="neutral_max">Máx Neutral</string>
+    <string name="greed_max">Máx Codicia</string>
+    <string name="extreme_greed_max">Máx Codicia Extrema</string>
+    <string name="language_label">IDIOMA</string>
+    <string name="lang_en">INGLÉS</string>
+    <string name="lang_ru">RUSO</string>
+    <string name="lang_es">ESPAÑOL</string>
+    <string name="lang_zh">CHINO</string>
+    <string name="lang_fr">FRANCÉS</string>
+    
+    <!-- New keys for Main and Widget -->
+    <string name="bitcoin_label">BITCOIN</string>
+    <string name="fear_tilt_system">SISTEMA DE MIEDO E INCLINACIÓN</string>
+    <string name="widget_fng">M&amp;C: %1$d</string>
+    <string name="refresh_data">Actualizar Datos</string>
+    <string name="settings_desc">Ajustes</string>
+    <string name="tilted_cart">Carro Inclinado</string>
+    
+    <!-- Donation -->
+    <string name="support_developer">APOYAR AL DESARROLLADOR</string>
+    <string name="address_copied">Dirección copiada al portapapeles</string>
+</resources>

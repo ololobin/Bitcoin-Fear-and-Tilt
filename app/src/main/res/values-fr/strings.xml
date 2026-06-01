@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bitcoin Fear &amp; Tilt</string>
+    <string name="cant_show_content">Impossible d\'afficher le contenu</string>
+    <string name="current_price">Prix Actuel</string>
+    <string name="change_label">Variation %1$s</string>
+    <string name="fear_greed_index">Indice de Peur et Cupidité</string>
+    <string name="extreme_fear">PEUR EXTRÊME</string>
+    <string name="fear">PEUR</string>
+    <string name="neutral">NEUTRE</string>
+    <string name="greed">CUPIDITÉ</string>
+    <string name="extreme_greed">CUPIDITÉ EXTRÊME</string>
+    <string name="settings_button">PARAMÈTRES</string>
+    <string name="refresh_button">ACTUALISER</string>
+    <string name="settings_console">CONSOLE DE PARAMÈTRES</string>
+    <string name="apply_save">Appliquer et Enregistrer</string>
+    <string name="reset_defaults">Réinitialiser</string>
+    <string name="color_mapping_direction">DIRECTION DE LA COULEUR</string>
+    <string name="up_green">HAUSSE = VERT</string>
+    <string name="up_red">HAUSSE = ROUGE</string>
+    <string name="widget_background">FOND DU WIDGET</string>
+    <string name="solid_color">COULEUR UNIE</string>
+    <string name="transparent">TRANSPARENT</string>
+    <string name="tilt_base_timeframe">PÉRIODE DE BASE</string>
+    <string name="timeframe_30m">30 MINUTES</string>
+    <string name="timeframe_24h">24 HEURES</string>
+    <string name="timeframe_start_of_day">MINUIT</string>
+    <string name="sensitivity_k">SENSIBILITÉ (K)</string>
+    <string name="sensitivity_description">Multiplicateur pour convertir le % de variation en angle.</string>
+    <string name="speed_threshold_x">SEUIL DE VITESSE (X%)</string>
+    <string name="speed_description">Active le chariot rapide si la variation est au-dessus de cette valeur.</string>
+    <string name="fear_greed_thresholds">SEUILS DE PEUR ET CUPIDITÉ</string>
+    <string name="extreme_fear_max">Peur Extrême Max</string>
+    <string name="fear_max">Peur Max</string>
+    <string name="neutral_max">Neutre Max</string>
+    <string name="greed_max">Cupidité Max</string>
+    <string name="extreme_greed_max">Cupidité Extrême Max</string>
+    <string name="language_label">LANGUE</string>
+    <string name="lang_en">ANGLAIS</string>
+    <string name="lang_ru">RUSSE</string>
+    <string name="lang_es">ESPAGNOL</string>
+    <string name="lang_zh">CHINOIS</string>
+    <string name="lang_fr">FRANÇAIS</string>
+    
+    <!-- New keys for Main and Widget -->
+    <string name="bitcoin_label">BITCOIN</string>
+    <string name="fear_tilt_system">SYSTÈME PEUR &amp; INCLINAISON</string>
+    <string name="widget_fng">P&amp;C: %1$d</string>
+    <string name="refresh_data">Actualiser</string>
+    <string name="settings_desc">Paramètres</string>
+    <string name="tilted_cart">Chariot Incliné</string>
+    
+    <!-- Donation -->
+    <string name="support_developer">SOUTENIR LE DÉVELOPPEUR</string>
+    <string name="address_copied">Adresse copiée dans le presse-papiers</string>
+</resources>

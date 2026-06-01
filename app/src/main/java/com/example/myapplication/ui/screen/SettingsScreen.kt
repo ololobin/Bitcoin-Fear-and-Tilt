@@ -31,6 +31,9 @@ import androidx.activity.compose.BackHandler
 import com.example.myapplication.ui.theme.CartoonBlack
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
+import android.widget.Toast
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -166,50 +169,25 @@ fun SettingsScreen(
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         
-                        Row(
+                        Column(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            // English
-                            val isEnSelected = localLanguage == "en"
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .background(
-                                        if (isEnSelected) Color(0xFF6B452B) else Color(0xFF352013),
-                                        RoundedCornerShape(8.dp)
-                                    )
-                                    .border(2.dp, CartoonBlack, RoundedCornerShape(8.dp))
-                                    .clickable { localLanguage = "en" }
-                                    .padding(12.dp),
-                                contentAlignment = Alignment.Center
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                Text(
-                                    text = getLocalizedString(context, R.string.lang_en, localLanguage),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = if (isEnSelected) Color.White else Color.Gray
-                                )
+                                LanguageOption(Modifier.weight(1f), "en", getLocalizedString(context, R.string.lang_en, localLanguage), localLanguage) { localLanguage = "en" }
+                                LanguageOption(Modifier.weight(1f), "ru", getLocalizedString(context, R.string.lang_ru, localLanguage), localLanguage) { localLanguage = "ru" }
+                                LanguageOption(Modifier.weight(1f), "es", getLocalizedString(context, R.string.lang_es, localLanguage), localLanguage) { localLanguage = "es" }
                             }
-
-                            // Russian
-                            val isRuSelected = localLanguage == "ru"
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .background(
-                                        if (isRuSelected) Color(0xFF6B452B) else Color(0xFF352013),
-                                        RoundedCornerShape(8.dp)
-                                    )
-                                    .border(2.dp, CartoonBlack, RoundedCornerShape(8.dp))
-                                    .clickable { localLanguage = "ru" }
-                                    .padding(12.dp),
-                                contentAlignment = Alignment.Center
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                Text(
-                                    text = getLocalizedString(context, R.string.lang_ru, localLanguage),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = if (isRuSelected) Color.White else Color.Gray
-                                )
+                                LanguageOption(Modifier.weight(1f), "zh", getLocalizedString(context, R.string.lang_zh, localLanguage), localLanguage) { localLanguage = "zh" }
+                                LanguageOption(Modifier.weight(1f), "fr", getLocalizedString(context, R.string.lang_fr, localLanguage), localLanguage) { localLanguage = "fr" }
+                                Spacer(modifier = Modifier.weight(1f))
                             }
                         }
                     }
@@ -519,6 +497,53 @@ fun SettingsScreen(
                     }
                 }
 
+                // 6. Support Developer
+                WoodCard(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            text = getLocalizedString(context, R.string.support_developer, localLanguage),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = Color.LightGray
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        val clipboardManager = LocalClipboardManager.current
+                        
+                        // BTC Address
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "BTC:",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color.White,
+                                modifier = Modifier.width(56.dp)
+                            )
+                            val btcAddress = "bc1qerl6emt8gtaxqf54u54ejalrs6sawh54g6drce"
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .background(Color(0xFF1E130B), RoundedCornerShape(6.dp))
+                                    .border(1.dp, CartoonBlack, RoundedCornerShape(6.dp))
+                                    .clickable {
+                                        clipboardManager.setText(AnnotatedString(btcAddress))
+                                        Toast.makeText(context, getLocalizedString(context, R.string.address_copied, localLanguage), Toast.LENGTH_SHORT).show()
+                                    }
+                                    .padding(horizontal = 8.dp, vertical = 12.dp)
+                            ) {
+                                Text(
+                                    text = btcAddress,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color(0xFFE5A93B),
+                                    maxLines = 1,
+                                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                                )
+                            }
+                        }
+                    }
+                }
+
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Reset Defaults Button at the bottom of settings list
@@ -586,6 +611,36 @@ fun ThresholdInputField(
                 unfocusedIndicatorColor = Color.Transparent
             ),
             singleLine = true
+        )
+    }
+}
+
+@Composable
+fun LanguageOption(
+    modifier: Modifier = Modifier,
+    langCode: String,
+    label: String,
+    currentLanguage: String,
+    onClick: () -> Unit
+) {
+    val isSelected = currentLanguage == langCode
+    Box(
+        modifier = modifier
+            .background(
+                if (isSelected) Color(0xFF6B452B) else Color(0xFF352013),
+                RoundedCornerShape(8.dp)
+            )
+            .border(2.dp, CartoonBlack, RoundedCornerShape(8.dp))
+            .clickable { onClick() }
+            .padding(vertical = 12.dp, horizontal = 2.dp), // smaller horizontal padding
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium, // smaller font
+            color = if (isSelected) Color.White else Color.Gray,
+            maxLines = 1,
+            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
         )
     }
 }
