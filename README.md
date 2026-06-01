@@ -1,94 +1,63 @@
 # 🚂 Bitcoin Fear & Tilt
 
-A premium, skeuomorphic game-art style Android application that visualizes Bitcoin price dynamics and market sentiment in real-time. 
+*Languages: [English](README.md) | [中文](README_zh.md)*
 
-Instead of dry financial charts, **Bitcoin Fear & Tilt** visualizes market psychology using an animated wooden minecart on a physics-based tilting slope. The slope angle indicates the price movement direction and velocity, while the coin's facial expression mirrors the current market sentiment (from ecstatic greed to panic-stricken fear).
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ololobin/Bitcoin-Fear-and-Tilt/android.yml?style=flat-square&logo=github)
+![GitHub License](https://img.shields.io/github/license/ololobin/Bitcoin-Fear-and-Tilt?style=flat-square)
+![Android Version](https://img.shields.io/badge/Android-7.0%2B-3DDC84?style=flat-square&logo=android)
 
----
+**Bitcoin Fear & Tilt** is a unique Android application for tracking Bitcoin's price and the "Fear and Greed Index". Instead of boring financial charts, it uses **physics and animation**: a wooden minecart dynamically tilts based on the speed and direction of price changes!
 
-## 🎨 Design & Key Features
+> [!TIP]
+> The app works both as a full-screen experience and as a **convenient home screen widget**!
 
-### 🎮 Skeuomorphic Dashboard
-- **Animated Wooden Cart**: A high-fidelity cartoon wooden cart that tilts dynamically using **Jetpack Compose spring-physics animations** to reflect price changes.
-- **Double LCD Displays**: Retro-illuminated game-art monitors showing:
-  - **Live Bitcoin Price** in USD.
-  - **Price Change Percentage** (selectable timeframes: 30m, 24h, or start-of-day).
-  - **Fear & Greed Index** value accompanied by a dynamic sentiment classification text.
-- **Sentiment Lamps**: Glow lamps that shift color based on sentiment thresholds (customizable red/green orientation, including inverted Chinese-style color mappings).
+<!-- PLACEHOLDER FOR MAIN BANNER / SCREENSHOT -->
+<!-- Insert the link to your beautiful screenshot replacing /path/to/hero_image.png -->
+![App Main Screen](/path/to/hero_image.png)
 
-### 🛠️ Pinned Settings Console
-- **Local Settings Buffering**: Changes made inside the settings console (timeframe, speed threshold, sensitivity, thresholds, widget background) are buffered locally in memory. Settings are only written to the database when clicking **Apply & SAVE**. Going back or swiping back discards changes.
-- **Auto-Keyboard Dismissal**: Released focus and closed soft keyboards automatically on exit to prevent system gesture conflicts.
-- **Interactive Reset Defaults**: Revert all preferences to default presets with a single click before choosing to save or cancel.
+## 🌟 Key Features
 
-### 📱 Home Screen Widget (Jetpack Glance)
-- **Adaptive Sizing**: Adapts seamlessly to both vertical and horizontal widget boundaries.
-- **Auto-Cropping Illustrations**: Code dynamically samples background colors and crops empty canvas margins from source images, enabling the cart illustration to be significantly larger and sharper on high-DPI screens.
-- **Three-Line LCD Readout**: Displays the live price, Fear & Greed Index, and the direction/percentage of price change.
-- **Flexible Transparency**: Background card transparency toggles in settings to match any home screen wallpaper.
+- **Animated Minecart:** Reacts to price jumps by tilting (using Spring Physics). The coin's face changes from panic-stricken fear to ecstatic greed!
+- **Retro LCD Screens:** Display the current price, percentage change, and the exact Fear & Greed index.
+- **Deep Customization:** Configure the timeframe (30 mins, 24 hours, since midnight), the cart's tilt sensitivity, and the index thresholds to your liking.
+- **Home Screen Widget:** All essential information (Price, Index, Trend) is always in front of you.
+- **Dynamic Launcher Icon:** The app icon changes its facial expression in your phone's app drawer based on the current market state! (Duolingo style).
+- **Multilingual:** Full support for English, Russian, Spanish, Chinese, and French.
 
-### 🎭 Dynamic Launcher Icons (Duolingo Style)
-- **Adaptive Full-Bleed Design**: Dynamic icons constructed as standard Android Adaptive Icons (`mipmap-anydpi-v26`) combining transparent foreground illustrations with a solid sky-blue background (`#9EBAC5`). The icon masks perfectly into circles, squares, or squircles without white borders.
-- **Changing Expressions**: The launcher icon dynamically changes based on the Bitcoin Fear & Greed Index, swapping between 5 distinct cartoon expressions:
-  - 🤩 **Extreme Greed** (Ecstatic open grin)
-  - 🙂 **Greed** (Cheerful smile)
-  - 😐 **Neutral** (Default straight expression)
-  - 😟 **Fear** (Worried / anxious expression)
-  - 😱 **Extreme Fear** (Panic-stricken screaming)
-- **Legacy Fallbacks**: High-density square PNG files automatically configured inside `mipmap/` to support older Android versions.
+## 📱 Home Screen Widget
 
----
+You can add a compact widget that updates automatically. The background can be solid or fully transparent to blend beautifully with your wallpaper.
 
-## 🛠️ Technology Stack
+<!-- PLACEHOLDER FOR WIDGET SCREENSHOT -->
+<!-- Insert the link to the widget screenshot replacing /path/to/widget_image.png -->
+![Widget Screenshot](/path/to/widget_image.png)
 
-- **Language**: Kotlin
-- **UI Architecture**: Jetpack Compose (Modern declarative UI)
-- **Home Screen Widget**: Jetpack Glance (Jetpack Compose wrapper for RemoteViews)
-- **Persistent Storage**: Preferences DataStore (Typed, thread-safe asynchronous storage)
-- **Background Tasks**: Android WorkManager (Periodic updates scheduled every 15 minutes)
-- **Network Client**: Retrofit & OKHttp (Fetches price updates from CoinGecko/Binance APIs and sentiment indices from Alternative.me)
+## 🛡️ Security & Trust (No Viruses)
+
+We understand that installing APK files directly from the internet can be concerning. That's why the build process for this app is completely **transparent**:
+
+1. **No hidden builds:** The ready-to-use APK file is built automatically by GitHub servers (via GitHub Actions) directly from the open-source code in this repository.
+2. **Public logs:** You can always check the [Actions](../../actions) tab and personally review the entire compilation process. As a developer, I cannot secretly swap the file.
+3. **VirusTotal Verification:** If you still have doubts, simply download the APK from the releases and upload it to [VirusTotal](https://www.virustotal.com/) before installing.
+
+## 📥 Installation
+
+1. Go to the **[Releases](../../releases)** section on GitHub.
+2. Download the latest `app-debug.apk` (a Release version is coming soon).
+3. Install it on your Android smartphone (you may need to allow installation from unknown sources).
 
 ---
 
-## 🚀 Building & Installation
+## 🤝 Acknowledgments & Credits
 
-### Prerequisites
-- JDK 21
-- Android SDK (Target API 36, Minimum API 24)
+* **Concept Inspiration:** This app is heavily inspired by the famous Bitcoin Rollercoaster meme and specifically the website [rollercoasterguy.github.io](https://rollercoasterguy.github.io/).
+* **Artwork:** The skeuomorphic and cartoonish graphical assets (the cart, the coins, the expressions) were originally generated and tailored using **Nanobanana** AI tools.
 
-### Compile & Build via CLI
-Configure your Java home path and execute the debug assembly:
-```powershell
-# Set JDK 21 environment variable
-$env:JAVA_HOME="C:\Program Files\Java\jdk-21"
+## 🛠️ For Developers
 
-# Clean build artifacts and compile APK
-.\gradlew.bat clean assembleDebug
+The app is written in **Kotlin** using the modern **Jetpack Compose** stack and **Jetpack Glance** (for widgets).
+
+For a local build, simply clone the repository and run:
+```bash
+./gradlew assembleDebug
 ```
-The compiled APK will be available at:
-`app/build/outputs/apk/debug/app-debug.apk`
-
-### Deploy & Run
-Install the compiled APK on a connected device/emulator:
-```powershell
-# Install APK
-adb install -r app/build/outputs/apk/debug/app-debug.apk
-
-# Launch App
-adb shell monkey -p com.example.myapplication -c android.intent.category.LAUNCHER 1
-```
-
----
-
-## 💡 Android Studio Run Tip (Dynamic Icon Debugging)
-
-Because the app uses `<activity-alias>` elements in the `AndroidManifest.xml` to dynamically swap the launcher icon, Android Studio's runner might output a verification error:
-`Activity class {com.example.myapplication/com.example.myapplication.MainActivityNeutral} does not exist`
-
-To resolve this launcher verification issue in your IDE:
-1. Click the **Run Configuration** dropdown (next to the green play button) and choose **Edit Configurations...**.
-2. Locate the **Launch Options** section.
-3. Change **Launch** from `Default Activity` to `Specified Activity`.
-4. In the **Activity** text box, enter:
-   `com.example.myapplication.MainActivity`
-5. Click **Apply** and **OK**.
