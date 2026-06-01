@@ -6,7 +6,11 @@
 ![GitHub License](https://img.shields.io/github/license/ololobin/Bitcoin-Fear-and-Tilt?style=flat-square)
 ![Android Version](https://img.shields.io/badge/Android-7.0%2B-3DDC84?style=flat-square&logo=android)
 
-**Bitcoin Fear & Tilt** is an Android application designed for real-time tracking of Bitcoin price dynamics and the market "Fear and Greed Index". Moving beyond traditional financial charts, it utilizes **physics-based animations**: a skeuomorphic wooden minecart dynamically reacts to market velocity and directional price changes.
+**Bitcoin Fear & Tilt** is an Android application designed for real-time tracking of Bitcoin price dynamics and the market "Fear and Greed Index". Instead of boring financial charts, it brings the market to life through interactive animations:
+
+- 🎢 **Dynamic Minecart:** The tilt of the wooden minecart changes depending on the speed and direction of the price (price dynamics).
+- 😱 **Market Sentiment:** The emotion on the Bitcoin's face changes to reflect the current Fear & Greed Index.
+- 🚀 **Extreme Volatility:** If the price jumps or drops drastically, the background switches to a high-speed motion blur, and the coin throws its hands up just like on a real rollercoaster!
 
 > [!TIP]
 > The application functions as a comprehensive full-screen dashboard, as well as a **highly customizable home screen widget**.
@@ -17,7 +21,7 @@
 
 ## 🌟 Key Features
 
-- **Physics-Based Animation:** The interface responds to price volatility with spring-physics calculations. The visual state dynamically transitions to reflect the spectrum of market sentiment.
+- **Interactive Animations:** The interface responds to market volatility and sentiment with the visual mechanics described above.
 - **Retro LCD Displays:** Provides real-time metrics including the current asset price, percentage change, and the exact Fear & Greed index value.
 - **Advanced Customization:** Users can configure tracking timeframes (30 mins, 24 hours, since midnight), adjust tilt sensitivity, and define custom sentiment index thresholds.
 - **Home Screen Widget:** Delivers essential market data (Price, Index, Trend) directly to your home screen for immediate access.
