@@ -114,7 +114,7 @@ class BtcWidget : GlanceAppWidget() {
                 modifier = GlanceModifier
                     .fillMaxSize()
                     .background(ColorProvider(resolvedWidgetBgColor))
-                    .padding(4.dp)
+                    .padding(2.dp)
                     .clickable(actionStartActivity<MainActivity>())
             ) {
                 if (isHorizontal) {
@@ -131,10 +131,10 @@ class BtcWidget : GlanceAppWidget() {
                                 .defaultWeight()
                                 .fillMaxHeight()
                         )
-                        Spacer(modifier = GlanceModifier.width(8.dp))
+                        Spacer(modifier = GlanceModifier.width(4.dp))
                         Column(
                             modifier = GlanceModifier
-                                .padding(end = 8.dp)
+                                .padding(end = 4.dp)
                                 .then(
                                     if (settings.isWidgetBackgroundTransparent) {
                                         GlanceModifier.background(ColorProvider(Color(red = 0f, green = 0f, blue = 0f, alpha = 0.6f)))
@@ -163,6 +163,15 @@ class BtcWidget : GlanceAppWidget() {
                                     fontWeight = FontWeight.Medium
                                 )
                             )
+                            Spacer(modifier = GlanceModifier.height(1.dp))
+                            Text(
+                                text = formatPercent(percent),
+                                style = TextStyle(
+                                    color = ColorProvider(color),
+                                    fontSize = dynamicFngSize,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
                         }
                     }
                 } else {
@@ -180,7 +189,7 @@ class BtcWidget : GlanceAppWidget() {
                                 .defaultWeight()
                                 .fillMaxWidth()
                         )
-                        Spacer(modifier = GlanceModifier.height(2.dp))
+                        Spacer(modifier = GlanceModifier.height(1.dp))
                         Column(
                             modifier = GlanceModifier
                                 .then(
@@ -190,7 +199,7 @@ class BtcWidget : GlanceAppWidget() {
                                         GlanceModifier
                                     }
                                 )
-                                .padding(horizontal = 8.dp, vertical = 4.dp),
+                                .padding(horizontal = 6.dp, vertical = 2.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
@@ -208,6 +217,15 @@ class BtcWidget : GlanceAppWidget() {
                                     color = ColorProvider(fngColor),
                                     fontSize = dynamicFngSize,
                                     fontWeight = FontWeight.Medium
+                                )
+                            )
+                            Spacer(modifier = GlanceModifier.height(1.dp))
+                            Text(
+                                text = formatPercent(percent),
+                                style = TextStyle(
+                                    color = ColorProvider(color),
+                                    fontSize = dynamicFngSize,
+                                    fontWeight = FontWeight.Bold
                                 )
                             )
                         }
@@ -362,16 +380,67 @@ fun rotateBitmap(context: Context, resId: Int, degrees: Float, targetSize: Int, 
     val decoded = BitmapFactory.decodeResource(context.resources, resId, options) ?: 
         return Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
         
+    // Crop solid background margins dynamically
+    val refColor = decoded.getPixel(0, 0)
+    val refR = (refColor shr 16) and 0xFF
+    val refG = (refColor shr 8) and 0xFF
+    val refB = refColor and 0xFF
+    val cropTolerance = 25
+    
+    var minX = decoded.width
+    var maxX = -1
+    var minY = decoded.height
+    var maxY = -1
+    
+    val pixelsForCrop = IntArray(decoded.width * decoded.height)
+    decoded.getPixels(pixelsForCrop, 0, decoded.width, 0, 0, decoded.width, decoded.height)
+    
+    for (y in 0 until decoded.height) {
+        for (x in 0 until decoded.width) {
+            val color = pixelsForCrop[y * decoded.width + x]
+            val r = (color shr 16) and 0xFF
+            val g = (color shr 8) and 0xFF
+            val b = color and 0xFF
+            
+            val isBg = abs(r - refR) <= cropTolerance && abs(g - refG) <= cropTolerance && abs(b - refB) <= cropTolerance
+            if (!isBg) {
+                if (x < minX) minX = x
+                if (x > maxX) maxX = x
+                if (y < minY) minY = y
+                if (y > maxY) maxY = y
+            }
+        }
+    }
+    
+    val cropped = if (maxX >= minX && maxY >= minY) {
+        val pad = 4
+        val finalMinX = maxOf(0, minX - pad)
+        val finalMaxX = minOf(decoded.width - 1, maxX + pad)
+        val finalMinY = maxOf(0, minY - pad)
+        val finalMaxY = minOf(decoded.height - 1, maxY + pad)
+        
+        val w = finalMaxX - finalMinX + 1
+        val h = finalMaxY - finalMinY + 1
+        Bitmap.createBitmap(decoded, finalMinX, finalMinY, w, h)
+    } else {
+        decoded
+    }
+    
+    if (cropped != decoded) {
+        decoded.recycle()
+    }
+        
     // If transparentBgColor is specified, replace pixels matching that color with transparent pixels
     val mutableBitmap = if (transparentBgColor != null) {
-        val width = decoded.width
-        val height = decoded.height
+        val width = cropped.width
+        val height = cropped.height
         val pixels = IntArray(width * height)
-        decoded.getPixels(pixels, 0, width, 0, 0, width, height)
+        cropped.getPixels(pixels, 0, width, 0, 0, width, height)
         
-        val targetR = (transparentBgColor.red * 255f).toInt()
-        val targetG = (transparentBgColor.green * 255f).toInt()
-        val targetB = (transparentBgColor.blue * 255f).toInt()
+        // Use refColor components for precise matching
+        val targetR = (refColor shr 16) and 0xFF
+        val targetG = (refColor shr 8) and 0xFF
+        val targetB = refColor and 0xFF
         val tolerance = 25 // Tolerating JPEG compression artifacts
         
         for (i in pixels.indices) {
@@ -387,10 +456,12 @@ fun rotateBitmap(context: Context, resId: Int, degrees: Float, targetSize: Int, 
         
         val newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         newBitmap.setPixels(pixels, 0, width, 0, 0, width, height)
-        decoded.recycle()
+        if (cropped != newBitmap) {
+            cropped.recycle()
+        }
         newBitmap
     } else {
-        decoded
+        cropped
     }
     
     // Scale to exact targetSize to prevent huge bitmaps in RemoteViews

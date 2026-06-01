@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import com.example.myapplication.util.IconManager
 
 class CryptoViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -31,6 +32,16 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             appSettingsManager.settingsFlow.collectLatest { settings ->
                 _uiState.value = settings
+                
+                // Synchronize launcher app icon with the Fear & Greed Index stage
+                val sentiment = when {
+                    settings.fngValue <= settings.thresholdExtremeFear -> "extreme_fear"
+                    settings.fngValue <= settings.thresholdFear -> "fear"
+                    settings.fngValue <= settings.thresholdNeutral -> "neutral"
+                    settings.fngValue <= settings.thresholdGreed -> "greed"
+                    else -> "extreme_greed"
+                }
+                IconManager.changeAppIcon(getApplication(), sentiment)
             }
         }
         // Run initial data refresh on startup

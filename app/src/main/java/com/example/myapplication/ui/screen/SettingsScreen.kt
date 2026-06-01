@@ -29,6 +29,8 @@ import com.example.myapplication.ui.CryptoViewModel
 import com.example.myapplication.ui.component.*
 import androidx.activity.compose.BackHandler
 import com.example.myapplication.ui.theme.CartoonBlack
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,15 +38,19 @@ fun SettingsScreen(
     viewModel: CryptoViewModel,
     onNavigateBack: () -> Unit
 ) {
-    BackHandler {
-        onNavigateBack()
-    }
-    
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     val settings by viewModel.uiState.collectAsState()
     val scrollState = rememberScrollState()
     val context = LocalContext.current
 
     // Local states
+    var localLanguage by remember(settings.language) { mutableStateOf(settings.language) }
+    var localIsColorInverted by remember(settings.isColorInverted) { mutableStateOf(settings.isColorInverted) }
+    var localIsWidgetBackgroundTransparent by remember(settings.isWidgetBackgroundTransparent) { mutableStateOf(settings.isWidgetBackgroundTransparent) }
+    var localTimeframe by remember(settings.timeframe) { mutableStateOf(settings.timeframe) }
+
     var extremeFearText by remember(settings.thresholdExtremeFear) { mutableStateOf(settings.thresholdExtremeFear.toString()) }
     var fearText by remember(settings.thresholdFear) { mutableStateOf(settings.thresholdFear.toString()) }
     var neutralText by remember(settings.thresholdNeutral) { mutableStateOf(settings.thresholdNeutral.toString()) }
@@ -53,6 +59,12 @@ fun SettingsScreen(
     
     var sensitivityText by remember(settings.sensitivityK) { mutableStateOf(settings.sensitivityK.toString()) }
     var speedThresholdText by remember(settings.speedThresholdX) { mutableStateOf(settings.speedThresholdX.toString()) }
+
+    BackHandler {
+        keyboardController?.hide()
+        focusManager.clearFocus()
+        onNavigateBack()
+    }
 
     Box(
         modifier = Modifier
@@ -78,6 +90,8 @@ fun SettingsScreen(
             ) {
                 IconButton(
                     onClick = {
+                        keyboardController?.hide()
+                        focusManager.clearFocus()
                         onNavigateBack()
                     },
                     modifier = Modifier
@@ -86,13 +100,13 @@ fun SettingsScreen(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = getLocalizedString(context, R.string.settings_desc, settings.language),
+                        contentDescription = getLocalizedString(context, R.string.settings_desc, localLanguage),
                         tint = Color(0xFFE5A93B)
                     )
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
-                    text = getLocalizedString(context, R.string.settings_console, settings.language),
+                    text = getLocalizedString(context, R.string.settings_console, localLanguage),
                     style = MaterialTheme.typography.titleLarge,
                     color = Color(0xFFE5A93B)
                 )
@@ -108,9 +122,12 @@ fun SettingsScreen(
                 horizontalArrangement = Arrangement.Center
             ) {
                 RetroButton(
-                    text = getLocalizedString(context, R.string.apply_save, settings.language),
+                    text = getLocalizedString(context, R.string.apply_save, localLanguage),
                     modifier = Modifier.fillMaxWidth()
                 ) {
+                    keyboardController?.hide()
+                    focusManager.clearFocus()
+
                     val ef = extremeFearText.toIntOrNull() ?: settings.thresholdExtremeFear
                     val f = fearText.toIntOrNull() ?: settings.thresholdFear
                     val n = neutralText.toIntOrNull() ?: settings.thresholdNeutral
@@ -120,6 +137,10 @@ fun SettingsScreen(
                     
                     sensitivityText.toFloatOrNull()?.let { viewModel.updateSensitivityK(it) }
                     speedThresholdText.toFloatOrNull()?.let { viewModel.updateSpeedThresholdX(it) }
+                    viewModel.updateLanguage(localLanguage)
+                    viewModel.updateIsColorInverted(localIsColorInverted)
+                    viewModel.updateIsWidgetBackgroundTransparent(localIsWidgetBackgroundTransparent)
+                    viewModel.updateTimeframe(localTimeframe)
                     
                     onNavigateBack()
                 }
@@ -139,7 +160,7 @@ fun SettingsScreen(
                 WoodCard(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
-                            text = getLocalizedString(context, R.string.language_label, settings.language),
+                            text = getLocalizedString(context, R.string.language_label, localLanguage),
                             style = MaterialTheme.typography.labelLarge,
                             color = Color.LightGray
                         )
@@ -150,7 +171,7 @@ fun SettingsScreen(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             // English
-                            val isEnSelected = settings.language == "en"
+                            val isEnSelected = localLanguage == "en"
                             Box(
                                 modifier = Modifier
                                     .weight(1f)
@@ -159,19 +180,19 @@ fun SettingsScreen(
                                         RoundedCornerShape(8.dp)
                                     )
                                     .border(2.dp, CartoonBlack, RoundedCornerShape(8.dp))
-                                    .clickable { viewModel.updateLanguage("en") }
+                                    .clickable { localLanguage = "en" }
                                     .padding(12.dp),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = getLocalizedString(context, R.string.lang_en, settings.language),
+                                    text = getLocalizedString(context, R.string.lang_en, localLanguage),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = if (isEnSelected) Color.White else Color.Gray
                                 )
                             }
 
                             // Russian
-                            val isRuSelected = settings.language == "ru"
+                            val isRuSelected = localLanguage == "ru"
                             Box(
                                 modifier = Modifier
                                     .weight(1f)
@@ -180,12 +201,12 @@ fun SettingsScreen(
                                         RoundedCornerShape(8.dp)
                                     )
                                     .border(2.dp, CartoonBlack, RoundedCornerShape(8.dp))
-                                    .clickable { viewModel.updateLanguage("ru") }
+                                    .clickable { localLanguage = "ru" }
                                     .padding(12.dp),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = getLocalizedString(context, R.string.lang_ru, settings.language),
+                                    text = getLocalizedString(context, R.string.lang_ru, localLanguage),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = if (isRuSelected) Color.White else Color.Gray
                                 )
@@ -200,7 +221,7 @@ fun SettingsScreen(
                 WoodCard(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
-                            text = getLocalizedString(context, R.string.color_mapping_direction, settings.language),
+                            text = getLocalizedString(context, R.string.color_mapping_direction, localLanguage),
                             style = MaterialTheme.typography.labelLarge,
                             color = Color.LightGray
                         )
@@ -211,7 +232,7 @@ fun SettingsScreen(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             // Normal (Up = Green, Down = Red)
-                            val isNormalSelected = !settings.isColorInverted
+                            val isNormalSelected = !localIsColorInverted
                             Box(
                                 modifier = Modifier
                                     .weight(1f)
@@ -220,19 +241,19 @@ fun SettingsScreen(
                                         RoundedCornerShape(8.dp)
                                     )
                                     .border(2.dp, CartoonBlack, RoundedCornerShape(8.dp))
-                                    .clickable { viewModel.updateIsColorInverted(false) }
+                                    .clickable { localIsColorInverted = false }
                                     .padding(12.dp),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = getLocalizedString(context, R.string.up_green, settings.language),
+                                    text = getLocalizedString(context, R.string.up_green, localLanguage),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = if (isNormalSelected) Color.White else Color.Gray
                                 )
                             }
 
                             // Inverted (Up = Red, Down = Green - Chinese style)
-                            val isInvertedSelected = settings.isColorInverted
+                            val isInvertedSelected = localIsColorInverted
                             Box(
                                 modifier = Modifier
                                     .weight(1f)
@@ -241,12 +262,12 @@ fun SettingsScreen(
                                         RoundedCornerShape(8.dp)
                                     )
                                     .border(2.dp, CartoonBlack, RoundedCornerShape(8.dp))
-                                    .clickable { viewModel.updateIsColorInverted(true) }
+                                    .clickable { localIsColorInverted = true }
                                     .padding(12.dp),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = getLocalizedString(context, R.string.up_red, settings.language),
+                                    text = getLocalizedString(context, R.string.up_red, localLanguage),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = if (isInvertedSelected) Color.White else Color.Gray
                                 )
@@ -255,265 +276,273 @@ fun SettingsScreen(
                     }
                 }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            // 1b. Widget Background Transparency Preference
-            WoodCard(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = getLocalizedString(context, R.string.widget_background, settings.language),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = Color.LightGray
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        // Solid Color (Default)
-                        val isSolidSelected = !settings.isWidgetBackgroundTransparent
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .background(
-                                    if (isSolidSelected) Color(0xFF6B452B) else Color(0xFF352013),
-                                    RoundedCornerShape(8.dp)
-                                )
-                                .border(2.dp, CartoonBlack, RoundedCornerShape(8.dp))
-                                .clickable { viewModel.updateIsWidgetBackgroundTransparent(false) }
-                                .padding(12.dp),
-                            contentAlignment = Alignment.Center
+                // 1b. Widget Background Transparency Preference
+                WoodCard(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            text = getLocalizedString(context, R.string.widget_background, localLanguage),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = Color.LightGray
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text(
-                                text = getLocalizedString(context, R.string.solid_color, settings.language),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = if (isSolidSelected) Color.White else Color.Gray
-                            )
-                        }
-
-                        // Transparent Background
-                        val isTransparentSelected = settings.isWidgetBackgroundTransparent
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .background(
-                                    if (isTransparentSelected) Color(0xFF6B452B) else Color(0xFF352013),
-                                    RoundedCornerShape(8.dp)
-                                )
-                                .border(2.dp, CartoonBlack, RoundedCornerShape(8.dp))
-                                .clickable { viewModel.updateIsWidgetBackgroundTransparent(true) }
-                                .padding(12.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = getLocalizedString(context, R.string.transparent, settings.language),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = if (isTransparentSelected) Color.White else Color.Gray
-                            )
-                        }
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // 2. Base Timeframe Configuration
-            WoodCard(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = getLocalizedString(context, R.string.tilt_base_timeframe, settings.language),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = Color.LightGray
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        Timeframe.values().forEach { tf ->
-                            val isSelected = settings.timeframe == tf
+                            // Solid Color (Default)
+                            val isSolidSelected = !localIsWidgetBackgroundTransparent
                             Box(
                                 modifier = Modifier
                                     .weight(1f)
                                     .background(
-                                        if (isSelected) Color(0xFF6B452B) else Color(0xFF352013),
+                                        if (isSolidSelected) Color(0xFF6B452B) else Color(0xFF352013),
                                         RoundedCornerShape(8.dp)
                                     )
                                     .border(2.dp, CartoonBlack, RoundedCornerShape(8.dp))
-                                    .clickable { viewModel.updateTimeframe(tf) }
-                                    .padding(10.dp),
+                                    .clickable { localIsWidgetBackgroundTransparent = false }
+                                    .padding(12.dp),
                                 contentAlignment = Alignment.Center
                             ) {
-                                val label = when (tf) {
-                                    Timeframe.T_30M -> getLocalizedString(context, R.string.timeframe_30m, settings.language)
-                                    Timeframe.T_24H -> getLocalizedString(context, R.string.timeframe_24h, settings.language)
-                                    Timeframe.START_OF_DAY -> getLocalizedString(context, R.string.timeframe_start_of_day, settings.language)
-                                }
                                 Text(
-                                    text = label,
-                                    style = MaterialTheme.typography.labelLarge,
-                                    color = if (isSelected) Color.White else Color.Gray
+                                    text = getLocalizedString(context, R.string.solid_color, localLanguage),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = if (isSolidSelected) Color.White else Color.Gray
+                                )
+                            }
+
+                            // Transparent Background
+                            val isTransparentSelected = localIsWidgetBackgroundTransparent
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .background(
+                                        if (isTransparentSelected) Color(0xFF6B452B) else Color(0xFF352013),
+                                        RoundedCornerShape(8.dp)
+                                    )
+                                    .border(2.dp, CartoonBlack, RoundedCornerShape(8.dp))
+                                    .clickable { localIsWidgetBackgroundTransparent = true }
+                                    .padding(12.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = getLocalizedString(context, R.string.transparent, localLanguage),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = if (isTransparentSelected) Color.White else Color.Gray
                                 )
                             }
                         }
                     }
                 }
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            // 3. Sensitivity Coefficient (K) Input Box
-            WoodCard(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
+                // 2. Base Timeframe Configuration
+                WoodCard(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
-                            text = getLocalizedString(context, R.string.sensitivity_k, settings.language),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Color.White
+                            text = getLocalizedString(context, R.string.tilt_base_timeframe, localLanguage),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = Color.LightGray
                         )
-                        
-                        TextField(
-                            value = sensitivityText,
-                            onValueChange = { newVal ->
-                                if (newVal.all { it.isDigit() || it == '.' }) {
-                                    sensitivityText = newVal
-                                    newVal.toFloatOrNull()?.let { viewModel.updateSensitivityK(it) }
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            Timeframe.values().forEach { tf ->
+                                val isSelected = localTimeframe == tf
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .background(
+                                            if (isSelected) Color(0xFF6B452B) else Color(0xFF352013),
+                                            RoundedCornerShape(8.dp)
+                                        )
+                                        .border(2.dp, CartoonBlack, RoundedCornerShape(8.dp))
+                                        .clickable { localTimeframe = tf }
+                                        .padding(10.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    val label = when (tf) {
+                                        Timeframe.T_30M -> getLocalizedString(context, R.string.timeframe_30m, localLanguage)
+                                        Timeframe.T_24H -> getLocalizedString(context, R.string.timeframe_24h, localLanguage)
+                                        Timeframe.START_OF_DAY -> getLocalizedString(context, R.string.timeframe_start_of_day, localLanguage)
+                                    }
+                                    Text(
+                                        text = label,
+                                        style = MaterialTheme.typography.labelLarge,
+                                        color = if (isSelected) Color.White else Color.Gray
+                                    )
                                 }
-                            },
-                            textStyle = TextStyle(fontSize = 14.sp),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                            modifier = Modifier
-                                .width(100.dp)
-                                .height(56.dp) // Fixed vertical cutoff
-                                .border(2.dp, CartoonBlack, RoundedCornerShape(6.dp)),
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color(0xFF1E130B),
-                                unfocusedContainerColor = Color(0xFF1E130B),
-                                focusedTextColor = Color.White,
-                                unfocusedTextColor = Color.White,
-                                focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent
-                            ),
-                            singleLine = true
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // 3. Sensitivity Coefficient (K) Input Box
+                WoodCard(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = getLocalizedString(context, R.string.sensitivity_k, localLanguage),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color.White
+                            )
+                            
+                            TextField(
+                                value = sensitivityText,
+                                onValueChange = { newVal ->
+                                    if (newVal.all { it.isDigit() || it == '.' }) {
+                                        sensitivityText = newVal
+                                    }
+                                },
+                                textStyle = TextStyle(fontSize = 14.sp),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                                modifier = Modifier
+                                    .width(100.dp)
+                                    .height(56.dp) // Fixed vertical cutoff
+                                    .border(2.dp, CartoonBlack, RoundedCornerShape(6.dp)),
+                                colors = TextFieldDefaults.colors(
+                                    focusedContainerColor = Color(0xFF1E130B),
+                                    unfocusedContainerColor = Color(0xFF1E130B),
+                                    focusedTextColor = Color.White,
+                                    unfocusedTextColor = Color.White,
+                                    focusedIndicatorColor = Color.Transparent,
+                                    unfocusedIndicatorColor = Color.Transparent
+                                ),
+                                singleLine = true
+                            )
+                        }
+                        Text(
+                            text = getLocalizedString(context, R.string.sensitivity_description, localLanguage),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = Color.Gray
                         )
                     }
-                    Text(
-                        text = getLocalizedString(context, R.string.sensitivity_description, settings.language),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = Color.Gray
-                    )
                 }
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            // 4. Speed Mode Threshold (X%) Input Box
-            WoodCard(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
+                // 4. Speed Mode Threshold (X%) Input Box
+                WoodCard(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = getLocalizedString(context, R.string.speed_threshold_x, localLanguage),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color.White
+                            )
+                            
+                            TextField(
+                                value = speedThresholdText,
+                                onValueChange = { newVal ->
+                                    if (newVal.all { it.isDigit() || it == '.' }) {
+                                        speedThresholdText = newVal
+                                    }
+                                },
+                                textStyle = TextStyle(fontSize = 14.sp),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                                modifier = Modifier
+                                    .width(100.dp)
+                                    .height(56.dp) // Fixed vertical cutoff
+                                    .border(2.dp, CartoonBlack, RoundedCornerShape(6.dp)),
+                                colors = TextFieldDefaults.colors(
+                                    focusedContainerColor = Color(0xFF1E130B),
+                                    unfocusedContainerColor = Color(0xFF1E130B),
+                                    focusedTextColor = Color.White,
+                                    unfocusedTextColor = Color.White,
+                                    focusedIndicatorColor = Color.Transparent,
+                                    unfocusedIndicatorColor = Color.Transparent
+                                ),
+                                singleLine = true
+                            )
+                        }
                         Text(
-                            text = getLocalizedString(context, R.string.speed_threshold_x, settings.language),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Color.White
-                        )
-                        
-                        TextField(
-                            value = speedThresholdText,
-                            onValueChange = { newVal ->
-                                if (newVal.all { it.isDigit() || it == '.' }) {
-                                    speedThresholdText = newVal
-                                    newVal.toFloatOrNull()?.let { viewModel.updateSpeedThresholdX(it) }
-                                }
-                            },
-                            textStyle = TextStyle(fontSize = 14.sp),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                            modifier = Modifier
-                                .width(100.dp)
-                                .height(56.dp) // Fixed vertical cutoff
-                                .border(2.dp, CartoonBlack, RoundedCornerShape(6.dp)),
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color(0xFF1E130B),
-                                unfocusedContainerColor = Color(0xFF1E130B),
-                                focusedTextColor = Color.White,
-                                unfocusedTextColor = Color.White,
-                                focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent
-                            ),
-                            singleLine = true
+                            text = getLocalizedString(context, R.string.speed_description, localLanguage),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = Color.Gray
                         )
                     }
-                    Text(
-                        text = getLocalizedString(context, R.string.speed_description, settings.language),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = Color.Gray
-                    )
                 }
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            // 5. Sentiment Thresholds Inputs
-            WoodCard(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = getLocalizedString(context, R.string.fear_greed_thresholds, settings.language),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = Color.LightGray
-                    )
-                    Spacer(modifier = Modifier.height(12.dp))
+                // 5. Sentiment Thresholds Inputs
+                WoodCard(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            text = getLocalizedString(context, R.string.fear_greed_thresholds, localLanguage),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = Color.LightGray
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
 
-                    ThresholdInputField(
-                        label = getLocalizedString(context, R.string.extreme_fear_max, settings.language),
-                        value = extremeFearText,
-                        onValueChange = { extremeFearText = it }
-                    )
-                    ThresholdInputField(
-                        label = getLocalizedString(context, R.string.fear_max, settings.language),
-                        value = fearText,
-                        onValueChange = { fearText = it }
-                    )
-                    ThresholdInputField(
-                        label = getLocalizedString(context, R.string.neutral_max, settings.language),
-                        value = neutralText,
-                        onValueChange = { neutralText = it }
-                    )
-                    ThresholdInputField(
-                        label = getLocalizedString(context, R.string.greed_max, settings.language),
-                        value = greedText,
-                        onValueChange = { greedText = it }
-                    )
-                    ThresholdInputField(
-                        label = getLocalizedString(context, R.string.extreme_greed_max, settings.language),
-                        value = extremeGreedText,
-                        onValueChange = { extremeGreedText = it }
-                    )
+                        ThresholdInputField(
+                            label = getLocalizedString(context, R.string.extreme_fear_max, localLanguage),
+                            value = extremeFearText,
+                            onValueChange = { extremeFearText = it }
+                        )
+                        ThresholdInputField(
+                            label = getLocalizedString(context, R.string.fear_max, localLanguage),
+                            value = fearText,
+                            onValueChange = { fearText = it }
+                        )
+                        ThresholdInputField(
+                            label = getLocalizedString(context, R.string.neutral_max, localLanguage),
+                            value = neutralText,
+                            onValueChange = { neutralText = it }
+                        )
+                        ThresholdInputField(
+                            label = getLocalizedString(context, R.string.greed_max, localLanguage),
+                            value = greedText,
+                            onValueChange = { greedText = it }
+                        )
+                        ThresholdInputField(
+                            label = getLocalizedString(context, R.string.extreme_greed_max, localLanguage),
+                            value = extremeGreedText,
+                            onValueChange = { extremeGreedText = it }
+                        )
+                    }
                 }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Reset Defaults Button at the bottom of settings list
+                RetroButton(
+                    text = getLocalizedString(context, R.string.reset_defaults, localLanguage),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    localLanguage = "en"
+                    localIsColorInverted = false
+                    localIsWidgetBackgroundTransparent = false
+                    localTimeframe = Timeframe.T_24H
+                    sensitivityText = "9.0"
+                    speedThresholdText = "2.0"
+                    extremeFearText = "24"
+                    fearText = "39"
+                    neutralText = "59"
+                    greedText = "74"
+                    extremeGreedText = "100"
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Reset Defaults Button at the bottom of settings list
-            RetroButton(
-                text = getLocalizedString(context, R.string.reset_defaults, settings.language),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                viewModel.resetToDefaults()
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
         }
     }
-}
 }
 
 @Composable
