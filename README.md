@@ -6,10 +6,10 @@
 ![GitHub License](https://img.shields.io/github/license/ololobin/Bitcoin-Fear-and-Tilt?style=flat-square)
 ![Android Version](https://img.shields.io/badge/Android-7.0%2B-3DDC84?style=flat-square&logo=android)
 
-**Bitcoin Fear & Tilt** is a unique Android application for tracking Bitcoin's price and the "Fear and Greed Index". Instead of boring financial charts, it uses **physics and animation**: a wooden minecart dynamically tilts based on the speed and direction of price changes!
+**Bitcoin Fear & Tilt** is an Android application designed for real-time tracking of Bitcoin price dynamics and the market "Fear and Greed Index". Moving beyond traditional financial charts, it utilizes **physics-based animations**: a skeuomorphic wooden minecart dynamically reacts to market velocity and directional price changes.
 
 > [!TIP]
-> The app works both as a full-screen experience and as a **convenient home screen widget**!
+> The application functions as a comprehensive full-screen dashboard, as well as a **highly customizable home screen widget**.
 
 <!-- PLACEHOLDER FOR MAIN BANNER / SCREENSHOT -->
 <!-- Insert the link to your beautiful screenshot replacing /path/to/hero_image.png -->
@@ -17,47 +17,47 @@
 
 ## 🌟 Key Features
 
-- **Animated Minecart:** Reacts to price jumps by tilting (using Spring Physics). The coin's face changes from panic-stricken fear to ecstatic greed!
-- **Retro LCD Screens:** Display the current price, percentage change, and the exact Fear & Greed index.
-- **Deep Customization:** Configure the timeframe (30 mins, 24 hours, since midnight), the cart's tilt sensitivity, and the index thresholds to your liking.
-- **Home Screen Widget:** All essential information (Price, Index, Trend) is always in front of you.
-- **Dynamic Launcher Icon:** The app icon changes its facial expression in your phone's app drawer based on the current market state! (Duolingo style).
-- **Multilingual:** Full support for English, Russian, Spanish, Chinese, and French.
+- **Physics-Based Animation:** The interface responds to price volatility with spring-physics calculations. The visual state dynamically transitions to reflect the spectrum of market sentiment.
+- **Retro LCD Displays:** Provides real-time metrics including the current asset price, percentage change, and the exact Fear & Greed index value.
+- **Advanced Customization:** Users can configure tracking timeframes (30 mins, 24 hours, since midnight), adjust tilt sensitivity, and define custom sentiment index thresholds.
+- **Home Screen Widget:** Delivers essential market data (Price, Index, Trend) directly to your home screen for immediate access.
+- **Dynamic Launcher Icon:** The application icon programmatically updates its visual state within the system launcher to mirror current market conditions.
+- **Multilingual Support:** Fully localized for English, Russian, Spanish, Chinese, and French.
 
 ## 📱 Home Screen Widget
 
-You can add a compact widget that updates automatically. The background can be solid or fully transparent to blend beautifully with your wallpaper.
+Deploy a lightweight, auto-updating widget to your home screen. It features customizable background transparency to ensure seamless integration with any system wallpaper.
 
 <!-- PLACEHOLDER FOR WIDGET SCREENSHOT -->
 <!-- Insert the link to the widget screenshot replacing /path/to/widget_image.png -->
 ![Widget Screenshot](/path/to/widget_image.png)
 
-## 🛡️ Security & Trust (No Viruses)
+## 🛡️ Security & Build Transparency
 
-We understand that installing APK files directly from the internet can be concerning. That's why the build process for this app is completely **transparent**:
+To ensure complete security and transparency for our users, this application employs an automated and public build process:
 
-1. **No hidden builds:** The ready-to-use APK file is built automatically by GitHub servers (via GitHub Actions) directly from the open-source code in this repository.
-2. **Public logs:** You can always check the [Actions](../../actions) tab and personally review the entire compilation process. As a developer, I cannot secretly swap the file.
-3. **VirusTotal Verification:** If you still have doubts, simply download the APK from the releases and upload it to [VirusTotal](https://www.virustotal.com/) before installing.
+1. **Automated CI/CD:** The release APK is compiled directly from the open-source codebase using GitHub Actions. There are no manual or opaque build steps.
+2. **Verifiable Logs:** The entire compilation process, including dependency resolution and build scripts, is publicly available in the [Actions](../../actions) tab for independent audit.
+3. **External Verification:** Users are encouraged to verify the integrity of the downloaded APK files through independent security services such as [VirusTotal](https://www.virustotal.com/) prior to installation.
 
 ## 📥 Installation
 
-1. Go to the **[Releases](../../releases)** section on GitHub.
-2. Download the latest `app-debug.apk` (a Release version is coming soon).
-3. Install it on your Android smartphone (you may need to allow installation from unknown sources).
+1. Navigate to the **[Releases](../../releases)** section on GitHub.
+2. Download the latest compiled `app-debug.apk` (Production releases will be available shortly).
+3. Install the application on your Android device (ensure installation from unknown sources is permitted in system settings).
 
 ---
 
 ## 🤝 Acknowledgments & Credits
 
-* **Concept Inspiration:** This app is heavily inspired by the famous Bitcoin Rollercoaster meme and specifically the website [rollercoasterguy.github.io](https://rollercoasterguy.github.io/).
-* **Artwork:** The skeuomorphic and cartoonish graphical assets (the cart, the coins, the expressions) were originally generated and tailored using **Nanobanana** AI tools.
+* **Concept Inspiration:** This project is conceptually inspired by the well-known Bitcoin Rollercoaster meme and the platform [rollercoasterguy.github.io](https://rollercoasterguy.github.io/).
+* **Artwork:** The skeuomorphic graphical assets (including the cart, coins, and expressions) were originally generated and tailored using **Nanobanana** AI tools.
 
 ## 🛠️ For Developers
 
-The app is written in **Kotlin** using the modern **Jetpack Compose** stack and **Jetpack Glance** (for widgets).
+The application is engineered in **Kotlin**, leveraging the modern **Jetpack Compose** UI toolkit and **Jetpack Glance** for widget implementation.
 
-For a local build, simply clone the repository and run:
+To compile the project locally, clone the repository and execute:
 ```bash
 ./gradlew assembleDebug
 ```
