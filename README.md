@@ -43,7 +43,7 @@ To ensure complete security and transparency for our users, this application emp
 ## 📥 Installation
 
 1. Navigate to the **[Releases](../../releases)** section on GitHub.
-2. Download the latest compiled `app-debug.apk` (Production releases will be available shortly).
+2. Download the latest compiled `app-debug.apk`.
 3. Install the application on your Android device (ensure installation from unknown sources is permitted in system settings).
 
 ---
