@@ -124,7 +124,7 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             appSettingsManager.updateColorMode(ColorMode.PRICE_MOVEMENT)
             appSettingsManager.updateTimeframe(Timeframe.T_24H)
-            appSettingsManager.updateSensitivityK(9.0f)
+            appSettingsManager.updateSensitivityK(14.0f)
             appSettingsManager.updateSpeedThresholdX(2.0f)
             appSettingsManager.updateIsColorInverted(false)
             appSettingsManager.updateIsWidgetBackgroundTransparent(false)

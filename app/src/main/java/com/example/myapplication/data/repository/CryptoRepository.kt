@@ -18,7 +18,6 @@ class CryptoRepository(
     private val coinApiService = NetworkClient.createCoinApiService()
     private val binanceService = NetworkClient.createBinanceService()
     private val alternativeMeService = NetworkClient.createAlternativeMeService()
-    private val coinStatsService = NetworkClient.createCoinStatsService()
 
     companion object {
         private const val TAG = "CryptoRepository"
@@ -47,7 +46,8 @@ class CryptoRepository(
             
             // F&G index update logic
             val currentTimestamp = System.currentTimeMillis()
-            val shouldFetchFng = !isSameDay(settings.fngTimestamp, currentTimestamp) || settings.fngValue == 50
+            val fourHoursMs = 4 * 60 * 60 * 1000L
+            val shouldFetchFng = (currentTimestamp - settings.fngTimestamp >= fourHoursMs) || settings.fngValue == 50
 
             val fngValue = if (shouldFetchFng) {
                 fetchFngIndex(settings, priceData.currentPrice, priceData.price24h)
@@ -162,20 +162,7 @@ class CryptoRepository(
             Log.w(TAG, "Alternative.me F&G failed: ${e.message}")
         }
 
-        // Source 2: CoinStats
-        try {
-            Log.d(TAG, "Attempting CoinStats for F&G Index...")
-            val response = coinStatsService.getFearAndGreed()
-            val value = response.now?.value
-            if (value != null) {
-                Log.d(TAG, "CoinStats F&G Index: $value")
-                return value
-            }
-        } catch (e: Exception) {
-            Log.w(TAG, "CoinStats F&G failed: ${e.message}")
-        }
-
-        // Source 3: Local Price-Momentum Sentiment calculation (fallback)
+        // Source 2: Local Price-Momentum Sentiment calculation (fallback)
         Log.d(TAG, "All F&G APIs failed. Performing local price change calculation...")
         val percentChange24h = if (price24h > 0.0) {
             ((currentPrice - price24h) / price24h) * 100.0

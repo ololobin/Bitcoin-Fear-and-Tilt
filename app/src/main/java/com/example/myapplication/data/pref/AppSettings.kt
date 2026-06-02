@@ -27,7 +27,7 @@ enum class Timeframe(val value: String) {
 data class AppSettings(
     val colorMode: ColorMode = ColorMode.PRICE_MOVEMENT,
     val timeframe: Timeframe = Timeframe.T_24H,
-    val sensitivityK: Float = 9.0f,
+    val sensitivityK: Float = 14.0f,
     val speedThresholdX: Float = 2.0f,
     
     // Sentiment Thresholds
@@ -89,7 +89,7 @@ class AppSettingsManager(private val context: Context) {
             AppSettings(
                 colorMode = ColorMode.valueOf(preferences[KEY_COLOR_MODE] ?: ColorMode.PRICE_MOVEMENT.name),
                 timeframe = Timeframe.fromValue(preferences[KEY_TIMEFRAME] ?: Timeframe.T_24H.value),
-                sensitivityK = preferences[KEY_SENSITIVITY_K] ?: 9.0f,
+                sensitivityK = preferences[KEY_SENSITIVITY_K] ?: 14.0f,
                 speedThresholdX = preferences[KEY_SPEED_THRESHOLD_X] ?: 2.0f,
                 
                 thresholdExtremeFear = preferences[KEY_THRESHOLD_EXTREME_FEAR] ?: 24,

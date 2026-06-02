@@ -555,7 +555,7 @@ fun SettingsScreen(
                     localIsColorInverted = false
                     localIsWidgetBackgroundTransparent = false
                     localTimeframe = Timeframe.T_24H
-                    sensitivityText = "9.0"
+                    sensitivityText = "14.0"
                     speedThresholdText = "2.0"
                     extremeFearText = "24"
                     fearText = "39"

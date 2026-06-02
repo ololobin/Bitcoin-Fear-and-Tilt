@@ -64,23 +64,6 @@ interface AlternativeMeService {
     ): AltMeFngResponse
 }
 
-// --- CoinStats F&G Models & Service ---
-data class CoinStatsFngValue(
-    val value: Int?,
-    val value_classification: String?
-)
-
-data class CoinStatsFngResponse(
-    val now: CoinStatsFngValue?
-)
-
-interface CoinStatsService {
-    @GET("v1/insights/fear-and-greed")
-    suspend fun getFearAndGreed(
-        @Header("X-API-KEY") apiKey: String = ""
-    ): CoinStatsFngResponse
-}
-
 // --- Retrofit Clients Builder ---
 object NetworkClient {
     private val okHttpClient = OkHttpClient.Builder()
@@ -123,14 +106,5 @@ object NetworkClient {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(AlternativeMeService::class.java)
-    }
-
-    fun createCoinStatsService(): CoinStatsService {
-        return Retrofit.Builder()
-            .baseUrl("https://open-api.coinstats.app/")
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(CoinStatsService::class.java)
     }
 }
