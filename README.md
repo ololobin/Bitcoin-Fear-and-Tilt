@@ -15,9 +15,10 @@
 > [!TIP]
 > The application functions as a comprehensive full-screen dashboard, as well as a **highly customizable home screen widget**.
 
-<!-- PLACEHOLDER FOR MAIN BANNER / SCREENSHOT -->
-<!-- Insert the link to your beautiful screenshot replacing /path/to/hero_image.png -->
-![App Main Screen](/path/to/hero_image.png)
+<p align="center">
+  <img src="example_1.jpg" width="45%" alt="App Main Screen 1" />
+  <img src="example_2.jpg" width="45%" alt="App Main Screen 2" />
+</p>
 
 ## 🌟 Key Features
 
@@ -32,9 +33,10 @@
 
 Deploy a lightweight, auto-updating widget to your home screen. It features customizable background transparency to ensure seamless integration with any system wallpaper.
 
-<!-- PLACEHOLDER FOR WIDGET SCREENSHOT -->
-<!-- Insert the link to the widget screenshot replacing /path/to/widget_image.png -->
-![Widget Screenshot](/path/to/widget_image.png)
+<p align="center">
+  <img src="example_4.jpg" width="45%" alt="Widget Screenshot 2" />
+  <img src="example_3.jpg" width="45%" alt="Widget Screenshot 1" />
+</p>
 
 ## 🛡️ Security & Build Transparency
 

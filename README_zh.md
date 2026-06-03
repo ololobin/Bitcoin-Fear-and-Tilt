@@ -15,9 +15,10 @@
 > [!TIP]
 > 该应用程序既可作为全面的全屏仪表板运行，也可作为**高度可定制的主屏幕小组件**。
 
-<!-- 主横幅 / 截图占位符 -->
-<!-- 将链接插入您漂亮的截图以替换 /path/to/hero_image.png -->
-![应用主屏幕](/path/to/hero_image.png)
+<p align="center">
+  <img src="example_1.jpg" width="45%" alt="应用主屏幕 1" />
+  <img src="example_2.jpg" width="45%" alt="应用主屏幕 2" />
+</p>
 
 ## 🌟 主要功能
 
@@ -32,9 +33,10 @@
 
 在您的主屏幕上部署一个轻量级、自动更新的小组件。它具有可自定义的背景透明度，以确保与任何系统壁纸无缝集成。
 
-<!-- 小组件截图占位符 -->
-<!-- 将链接插入小组件截图以替换 /path/to/widget_image.png -->
-![小组件截图](/path/to/widget_image.png)
+<p align="center">
+  <img src="example_4.jpg" width="45%" alt="小组件截图 2" />
+  <img src="example_3.jpg" width="45%" alt="小组件截图 1" />
+</p>
 
 ## 🛡️ 安全性与构建透明度
 
