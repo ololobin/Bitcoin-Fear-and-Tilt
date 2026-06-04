@@ -43,7 +43,7 @@
     
     <!-- New keys for Main and Widget -->
     <string name="bitcoin_label">БИТКОИН</string>
-    <string name="fear_tilt_system">СИСТЕМА СТРАХА И НАКЛОНА</string>
+    <string name="fear_tilt_system">СТРАХ И НАКЛОН</string>
     <string name="widget_fng">Индекс: %1$d</string>
     <string name="refresh_data">Обновить данные</string>
     <string name="settings_desc">Настройки</string>
@@ -52,4 +52,5 @@
     <!-- Donation -->
     <string name="support_developer">ПОДДЕРЖАТЬ РАЗРАБОТЧИКА</string>
     <string name="address_copied">Адрес скопирован в буфер обмена</string>
+    <string name="market_commentary">Рыночный комментарий</string>
 </resources>

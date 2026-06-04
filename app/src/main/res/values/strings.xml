@@ -43,7 +43,7 @@
     
     <!-- New keys for Main and Widget -->
     <string name="bitcoin_label">BITCOIN</string>
-    <string name="fear_tilt_system">FEAR &amp; TILT SYSTEM</string>
+    <string name="fear_tilt_system">FEAR &amp; TILT</string>
     <string name="widget_fng">F&amp;G: %1$d</string>
     <string name="refresh_data">Refresh Data</string>
     <string name="settings_desc">Settings</string>
@@ -52,4 +52,5 @@
     <!-- Donation -->
     <string name="support_developer">SUPPORT DEVELOPER</string>
     <string name="address_copied">Address copied to clipboard</string>
+    <string name="market_commentary">Market Commentary</string>
 </resources>

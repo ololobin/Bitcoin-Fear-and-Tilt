@@ -69,6 +69,7 @@ fun MainScreen(
     val imageRes = getCartImageRes(context, settings, percent)
     val classification = getSentimentClassification(context, settings.fngValue, settings)
     val themeColor = getSentimentColor(settings, percent)
+    val memePhrase = getMemePhrase(percent, settings.currentPrice)
 
     Box(
         modifier = Modifier
@@ -209,24 +210,25 @@ fun MainScreen(
 
             // LCD Monitor Screens (Double display)
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Min),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 LcdDisplay(
-                    modifier = Modifier.weight(1f),
-                    label = getLocalizedString(context, R.string.current_price, settings.language),
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    label = "",
                     value = String.format("$%,.0f", settings.currentPrice),
                     valueColor = themeColor
                 )
                 
-                val timeframeLabel = when (settings.timeframe) {
-                    Timeframe.T_30M -> getLocalizedString(context, R.string.timeframe_30m, settings.language)
-                    Timeframe.T_24H -> getLocalizedString(context, R.string.timeframe_24h, settings.language)
-                    Timeframe.START_OF_DAY -> getLocalizedString(context, R.string.timeframe_start_of_day, settings.language)
-                }
                 LcdDisplay(
-                    modifier = Modifier.weight(1f),
-                    label = getLocalizedString(context, R.string.change_label, settings.language, timeframeLabel),
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    label = "",
                     value = formatChangePercent(percent),
                     valueColor = themeColor
                 )
@@ -237,9 +239,19 @@ fun MainScreen(
             // Large LCD for Sentiment Details
             LcdDisplay(
                 modifier = Modifier.fillMaxWidth(),
-                label = getLocalizedString(context, R.string.fear_greed_index, settings.language),
+                label = "",
                 value = "${settings.fngValue} - $classification",
                 valueColor = getFngColor(settings)
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Large LCD for Meme Phrase
+            LcdDisplay(
+                modifier = Modifier.fillMaxWidth(),
+                label = "",
+                value = "\"$memePhrase\"",
+                valueColor = themeColor
             )
 
 
@@ -328,4 +340,90 @@ fun getFngColor(settings: AppSettings): Color {
         isRed -> redResult
         else -> SentimentNeutral
     }
+}
+
+fun getMemePhrase(percent: Double, currentPrice: Double): String {
+    val tronaldDump = listOf(
+        "PANIC SELLING!",
+        "DUMPPP!",
+        "Going to 0! LOL",
+        "Buy da dip!",
+        "10% off sale!",
+        "Buy dip or die",
+        "Damp it.",
+        "Elon tweeted...",
+        "Fire sale!",
+        "RIP savings",
+        "GUH.",
+        "He bought? Dump!",
+        "McDonald's hiring",
+        "Steady lads...",
+        "FTX did this",
+        "Wendy's hiring",
+        "Giga-rekt!",
+        "Liquidated!",
+        "SBF needs bail",
+        "Not real loss!",
+        "Hotline pinned",
+        "Reddit hotline time",
+        "Hotline is busy"
+    )
+
+    val hodlersBelike = listOf(
+        "HODL!",
+        "Hodloor!",
+        "To da moon!",
+        "$100k incoming!",
+        "Sell wife, buy BTC",
+        "Buckle up!",
+        "Alts look tiny",
+        "Buy today?",
+        "WAGMI!",
+        "HFSP",
+        "Laser eyes on!",
+        "Feel the pump!",
+        "To Uranus!",
+        "Goodbye Fiat!",
+        "Lambo when?",
+        "In BTC we trust",
+        "Saylor is buying",
+        "Up only!",
+        "Few.",
+        "ETF inflows go brrr",
+        "1 BTC = 1 BTC",
+        "Study Bitcoin."
+    )
+
+    val meh = listOf(
+        "meh..",
+        "mmm...",
+        "meh",
+        "Do something...",
+        "No dump, no pump",
+        "Crab market",
+        "Stablecoin BTC",
+        "Boring!",
+        "Sideways forever",
+        "Do something!",
+        "Waiting...",
+        "Consolidation",
+        "Calm before storm",
+        "Wet noodle",
+        "Sideways pain",
+        "Max pain",
+        "Checking chart...",
+        "Wake me at $100k",
+        "Crab walk",
+        "Low volatility"
+    )
+
+    val phrases = when {
+        percent > 0.0 -> hodlersBelike
+        percent < 0.0 -> tronaldDump
+        else -> meh
+    }
+    
+    val hash = abs(currentPrice.toString().hashCode())
+    val index = hash % phrases.size
+    return phrases[index]
 }

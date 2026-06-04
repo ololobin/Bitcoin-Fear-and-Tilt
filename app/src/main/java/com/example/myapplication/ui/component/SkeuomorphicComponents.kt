@@ -78,7 +78,7 @@ fun WoodCard(
 @Composable
 fun LcdDisplay(
     modifier: Modifier = Modifier,
-    label: String,
+    label: String = "",
     value: String,
     valueColor: Color = LcdGlowText
 ) {
@@ -91,12 +91,14 @@ fun LcdDisplay(
             .border(2.dp, Color.Black, RoundedCornerShape(8.dp))
             .padding(horizontal = 16.dp, vertical = 10.dp)
     ) {
-        Text(
-            text = label.uppercase(),
-            style = MaterialTheme.typography.labelLarge,
-            color = Color.Gray
-        )
-        Spacer(modifier = Modifier.height(4.dp))
+        if (label.isNotBlank()) {
+            Text(
+                text = label.uppercase(),
+                style = MaterialTheme.typography.labelLarge,
+                color = Color.Gray
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+        }
         Text(
             text = value,
             style = MaterialTheme.typography.displayLarge,

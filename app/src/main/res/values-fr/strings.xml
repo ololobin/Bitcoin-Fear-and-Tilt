@@ -44,7 +44,7 @@
     
     <!-- New keys for Main and Widget -->
     <string name="bitcoin_label">BITCOIN</string>
-    <string name="fear_tilt_system">SYSTÈME PEUR &amp; INCLINAISON</string>
+    <string name="fear_tilt_system">PEUR &amp; INCLINAISON</string>
     <string name="widget_fng">P&amp;C: %1$d</string>
     <string name="refresh_data">Actualiser</string>
     <string name="settings_desc">Paramètres</string>
@@ -53,4 +53,5 @@
     <!-- Donation -->
     <string name="support_developer">SOUTENIR LE DÉVELOPPEUR</string>
     <string name="address_copied">Adresse copiée dans le presse-papiers</string>
+    <string name="market_commentary">Commentaire du marché</string>
 </resources>

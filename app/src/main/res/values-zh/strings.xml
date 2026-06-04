@@ -44,7 +44,7 @@
     
     <!-- New keys for Main and Widget -->
     <string name="bitcoin_label">比特币</string>
-    <string name="fear_tilt_system">恐慌与倾斜系统</string>
+    <string name="fear_tilt_system">恐慌与倾斜</string>
     <string name="widget_fng">恐贪指数: %1$d</string>
     <string name="refresh_data">刷新数据</string>
     <string name="settings_desc">设置</string>
@@ -53,4 +53,5 @@
     <!-- Donation -->
     <string name="support_developer">支持开发者</string>
     <string name="address_copied">地址已复制到剪贴板</string>
+    <string name="market_commentary">市场评论</string>
 </resources>
