@@ -45,6 +45,7 @@ data class AppSettings(
     
     val fngValue: Int = 50,
     val fngTimestamp: Long = 0L, // Time in milliseconds when F&G index was fetched
+    val fngNextUpdateTime: Long = 0L,
     
     val previousPrice: Double = 0.0,
     val coinApiKey: String = "",
@@ -76,6 +77,7 @@ class AppSettingsManager(private val context: Context) {
         
         private val KEY_FNG_VALUE = intPreferencesKey("fng_value")
         private val KEY_FNG_TIMESTAMP = longPreferencesKey("fng_timestamp")
+        private val KEY_FNG_NEXT_UPDATE_TIME = longPreferencesKey("fng_next_update_time")
         
         private val KEY_PREVIOUS_PRICE = doublePreferencesKey("previous_price")
         private val KEY_COIN_API_KEY = stringPreferencesKey("coin_api_key")
@@ -105,6 +107,7 @@ class AppSettingsManager(private val context: Context) {
                 
                 fngValue = preferences[KEY_FNG_VALUE] ?: 50,
                 fngTimestamp = preferences[KEY_FNG_TIMESTAMP] ?: 0L,
+                fngNextUpdateTime = preferences[KEY_FNG_NEXT_UPDATE_TIME] ?: 0L,
                 
                 previousPrice = preferences[KEY_PREVIOUS_PRICE] ?: 0.0,
                 coinApiKey = preferences[KEY_COIN_API_KEY] ?: "",
@@ -190,10 +193,17 @@ class AppSettingsManager(private val context: Context) {
         }
     }
 
-    suspend fun cacheFng(fngValue: Int, timestamp: Long) {
+    suspend fun cacheFng(fngValue: Int, timestamp: Long, nextUpdateTime: Long) {
         context.dataStore.edit { preferences ->
             preferences[KEY_FNG_VALUE] = fngValue
             preferences[KEY_FNG_TIMESTAMP] = timestamp
+            preferences[KEY_FNG_NEXT_UPDATE_TIME] = nextUpdateTime
+        }
+    }
+
+    suspend fun cacheFngNextUpdateTime(nextUpdateTime: Long) {
+        context.dataStore.edit { preferences ->
+            preferences[KEY_FNG_NEXT_UPDATE_TIME] = nextUpdateTime
         }
     }
 }

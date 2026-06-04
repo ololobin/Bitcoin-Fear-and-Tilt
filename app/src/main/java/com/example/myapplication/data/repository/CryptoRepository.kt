@@ -46,16 +46,39 @@ class CryptoRepository(
             
             // F&G index update logic
             val currentTimestamp = System.currentTimeMillis()
-            val fourHoursMs = 4 * 60 * 60 * 1000L
-            val shouldFetchFng = (currentTimestamp - settings.fngTimestamp >= fourHoursMs) || settings.fngValue == 50
+            val shouldFetchFng = (currentTimestamp >= settings.fngNextUpdateTime) || settings.fngNextUpdateTime == 0L || settings.fngValue == 50
 
-            val fngValue = if (shouldFetchFng) {
-                fetchFngIndex(settings, priceData.currentPrice, priceData.price24h)
+            var fngValue = settings.fngValue
+            var fngTimestamp = settings.fngTimestamp
+            var fngNextUpdateTime = settings.fngNextUpdateTime
+            var didFngChange = false
+
+            if (shouldFetchFng) {
+                val fngResult = fetchFngIndex()
+                if (fngResult != null) {
+                    if (fngResult.timestamp > settings.fngTimestamp) {
+                        fngValue = fngResult.value
+                        fngTimestamp = fngResult.timestamp
+                        fngNextUpdateTime = System.currentTimeMillis() + (fngResult.timeUntilUpdateSec * 1000L) + 300_000L // 5-minute safety buffer
+                        didFngChange = true
+                        Log.d(TAG, "New F&G index cached. Value: $fngValue, next update: $fngNextUpdateTime")
+                    } else {
+                        // Stale timestamp, retry in 6 hours
+                        fngNextUpdateTime = System.currentTimeMillis() + 6 * 60 * 60 * 1000L
+                        didFngChange = true
+                        Log.d(TAG, "F&G index not yet updated on server. Storing 6-hour retry time: $fngNextUpdateTime")
+                    }
+                } else {
+                    // API call failed, retry in 6 hours
+                    fngNextUpdateTime = System.currentTimeMillis() + 6 * 60 * 60 * 1000L
+                    didFngChange = true
+                    Log.d(TAG, "F&G index API call failed. Storing 6-hour retry time: $fngNextUpdateTime")
+                }
             } else {
-                settings.fngValue
+                Log.d(TAG, "Skipping F&G fetch. Cached until: ${settings.fngNextUpdateTime}")
             }
 
-            // Save prices and F&G index to local datastore
+            // Save prices to local datastore
             appSettingsManager.cachePrices(
                 currentPrice = priceData.currentPrice,
                 price30m = priceData.price30m,
@@ -63,8 +86,8 @@ class CryptoRepository(
                 priceStartOfDay = priceData.priceStartOfDay
             )
 
-            if (shouldFetchFng) {
-                appSettingsManager.cacheFng(fngValue, currentTimestamp)
+            if (didFngChange) {
+                appSettingsManager.cacheFng(fngValue, fngTimestamp, fngNextUpdateTime)
             }
 
             Result.success(Unit)
@@ -146,38 +169,31 @@ class CryptoRepository(
         return Result.failure(Exception("All price APIs failed"))
     }
 
-    private suspend fun fetchFngIndex(settings: AppSettings, currentPrice: Double, price24h: Double): Int {
-        // Source 1: Alternative.me
+    private suspend fun fetchFngIndex(): FngResult? {
         try {
             Log.d(TAG, "Attempting Alternative.me for F&G Index...")
             val response = alternativeMeService.getFearAndGreed()
             if (response.data.isNotEmpty()) {
-                val value = response.data.first().value.toIntOrNull()
-                if (value != null) {
-                    Log.d(TAG, "Alternative.me F&G Index: $value")
-                    return value
+                val item = response.data.first()
+                val value = item.value.toIntOrNull()
+                val timestampSec = item.timestamp.toLongOrNull()
+                if (value != null && timestampSec != null) {
+                    val timestampMs = timestampSec * 1000L
+                    val timeUntilUpdateSec = item.time_until_update?.toLongOrNull() ?: 86400L // 24h fallback
+                    return FngResult(value, timestampMs, timeUntilUpdateSec)
                 }
             }
         } catch (e: Exception) {
-            Log.w(TAG, "Alternative.me F&G failed: ${e.message}")
+            Log.w(TAG, "Alternative.me F&G API failed: ${e.message}", e)
         }
-
-        // Source 2: Local Price-Momentum Sentiment calculation (fallback)
-        Log.d(TAG, "All F&G APIs failed. Performing local price change calculation...")
-        val percentChange24h = if (price24h > 0.0) {
-            ((currentPrice - price24h) / price24h) * 100.0
-        } else {
-            0.0
-        }
-        // Map 24h price change to sentiment index [0 - 100]:
-        // 0% change = 50 (Neutral)
-        // +10% change or more = 80 (Greed)
-        // -10% change or less = 20 (Fear)
-        // Linearly interpolate between these values
-        val localFng = ((percentChange24h / 10.0) * 30.0 + 50.0).coerceIn(0.0, 100.0).toInt()
-        Log.d(TAG, "Local calculated F&G Index: $localFng (24h Price Change: ${String.format("%.2f", percentChange24h)}%)")
-        return localFng
+        return null
     }
+
+    private data class FngResult(
+        val value: Int,
+        val timestamp: Long,
+        val timeUntilUpdateSec: Long
+    )
 
     private fun findClosestPrice(prices: List<List<Double>>, targetTimeMs: Long): Double {
         if (prices.isEmpty()) return 0.0

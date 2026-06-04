@@ -54,7 +54,8 @@ data class AltMeFngResponse(
 data class AltMeFngData(
     val value: String,
     val value_classification: String,
-    val timestamp: String
+    val timestamp: String,
+    val time_until_update: String? = null
 )
 
 interface AlternativeMeService {

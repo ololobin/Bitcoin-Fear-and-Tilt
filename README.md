@@ -3,7 +3,7 @@
 *Languages: [English](README.md) | [中文](README_zh.md)*
 
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ololobin/Bitcoin-Fear-and-Tilt/android.yml?style=flat-square&logo=github)
-![GitHub License](https://img.shields.io/github/license/ololobin/Bitcoin-Fear-and-Tilt?style=flat-square)
+![GitHub License](https://img.shields.io/github/license/ololobin/Bitcoin-Fear-and-Tilt?style=flat-square&v=1)
 ![Android Version](https://img.shields.io/badge/Android-7.0%2B-3DDC84?style=flat-square&logo=android)
 
 **Bitcoin Fear & Tilt** is an Android application designed for real-time tracking of Bitcoin price dynamics and the market "Fear and Greed Index". Instead of boring financial charts, it brings the market to life through interactive animations:
