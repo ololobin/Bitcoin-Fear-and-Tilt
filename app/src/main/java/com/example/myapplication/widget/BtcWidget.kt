@@ -57,6 +57,7 @@ import com.example.myapplication.data.repository.CryptoRepository
 import com.example.myapplication.worker.UpdateWorker
 import kotlinx.coroutines.flow.first
 import kotlin.math.abs
+import com.example.myapplication.util.MemeManager
 
 class BtcWidget : GlanceAppWidget() {
 
@@ -73,7 +74,7 @@ class BtcWidget : GlanceAppWidget() {
             val angle = -(percent.toFloat() * settings.sensitivityK).coerceIn(-89f, 89f)
             val color = getThemeColor(settings, percent)
             val fngColor = getThemeFngColor(settings)
-            val memePhrase = getMemePhrase(percent, settings.currentPrice)
+            val memePhrase = MemeManager.getMemePhrase(percent, settings.currentPrice, settings.language)
             
             val imageResName = getCartImageResName(context, settings, percent)
             val imageRes = context.resources.getIdentifier(imageResName, "drawable", context.packageName).let {
@@ -524,88 +525,3 @@ fun formatPercent(percent: Double): String {
     return String.format("%s%.2f%%", sign, percent)
 }
 
-fun getMemePhrase(percent: Double, currentPrice: Double): String {
-    val tronaldDump = listOf(
-        "PANIC SELLING!",
-        "DUMPPP!",
-        "Going to 0! LOL",
-        "Buy da dip!",
-        "10% off sale!",
-        "Buy dip or die",
-        "Damp it.",
-        "Elon tweeted...",
-        "Fire sale!",
-        "RIP savings",
-        "GUH.",
-        "He bought? Dump!",
-        "McDonald's hiring",
-        "Steady lads...",
-        "FTX did this",
-        "Wendy's hiring",
-        "Giga-rekt!",
-        "Liquidated!",
-        "SBF needs bail",
-        "Not real loss!",
-        "Hotline pinned",
-        "Reddit hotline time",
-        "Hotline is busy"
-    )
-
-    val hodlersBelike = listOf(
-        "HODL!",
-        "Hodloor!",
-        "To da moon!",
-        "$100k incoming!",
-        "Sell wife, buy BTC",
-        "Buckle up!",
-        "Alts look tiny",
-        "Buy today?",
-        "WAGMI!",
-        "HFSP",
-        "Laser eyes on!",
-        "Feel the pump!",
-        "To Uranus!",
-        "Goodbye Fiat!",
-        "Lambo when?",
-        "In BTC we trust",
-        "Saylor is buying",
-        "Up only!",
-        "Few.",
-        "ETF inflows go brrr",
-        "1 BTC = 1 BTC",
-        "Study Bitcoin."
-    )
-
-    val meh = listOf(
-        "meh..",
-        "mmm...",
-        "meh",
-        "Do something...",
-        "No dump, no pump",
-        "Crab market",
-        "Stablecoin BTC",
-        "Boring!",
-        "Sideways forever",
-        "Do something!",
-        "Waiting...",
-        "Consolidation",
-        "Calm before storm",
-        "Wet noodle",
-        "Sideways pain",
-        "Max pain",
-        "Checking chart...",
-        "Wake me at $100k",
-        "Crab walk",
-        "Low volatility"
-    )
-
-    val phrases = when {
-        percent > 0.0 -> hodlersBelike
-        percent < 0.0 -> tronaldDump
-        else -> meh
-    }
-    
-    val hash = abs(currentPrice.toString().hashCode())
-    val index = hash % phrases.size
-    return phrases[index]
-}
