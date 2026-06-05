@@ -34,7 +34,49 @@ object MemeManager {
         "Trading is easy, they said",
         "Copium supply running low",
         "I should have bought gold instead",
-        "Margin call has entered the chat"
+        "Margin call has entered the chat",
+        "GERMAN FUD",
+        "MT.GOX MOVE",
+        "SAYLOR LIQ",
+        "MSTR MARGIN",
+        "PUMP.FUN DUMP",
+        "100x LIQ",
+        "GUH!",
+        "SOLANA DOWN",
+        "WATER DIET",
+        "CZ SELLS?",
+        "GARY'S TARGET",
+        "GENSLER",
+        "NVDA ROTATE",
+        "DUMPSTER RENT",
+        "RAMEN DIET",
+        "GURU RUN",
+        "SPOUSE MAD",
+        "BUS CARD",
+        "TETHER FUD",
+        "HALVING SCAM",
+        "CRAMER BULL",
+        "IBIT DUMP",
+        "POWELL DELAY",
+        "SAXONY DUMP",
+        "GERMANY OUT",
+        "SEC APPEAL",
+        "SUMMER BLEED",
+        "HOPE ZERO",
+        "FEES > PORT",
+        "BUY THE TOP",
+        "CAT TRADES",
+        "LOSS PORN",
+        "WIFE'S BOYF",
+        "BUY HIGH",
+        "SELL LOW",
+        "BAGHOLDER",
+        "DUMP IT",
+        "HE BOUGHT?",
+        "GIGA REKT",
+        "APE IN DUST",
+        "CASINO CLOSE",
+        "BTFD!"
     )
 
     private val pumpMemes = listOf(
@@ -66,7 +108,29 @@ object MemeManager {
         "Stacking sats like a king",
         "My only regret is not buying more",
         "To Uranus and beyond!",
-        "Retirement plan is working"
+        "Retirement plan is working",
+        "LASER EYES",
+        "CRAMER BEAR",
+        "SHORTS REKT",
+        "BEARS REKT",
+        "GOD CANDLE",
+        "GIGA CANDLE",
+        "FOMO ON",
+        "GEN WEALTH",
+        "QUIT MY JOB",
+        "PUMP IT!",
+        "BYE POVERTY",
+        "EASY 100K",
+        "TO THE MOON",
+        "SAYLOR SMILE",
+        "RICH SOON",
+        "MOON WALK",
+        "DIAMOND HAND",
+        "LFG!",
+        "HE SOLD?",
+        "STONKS UP",
+        "STONKS!",
+        "MOON MISSION"
     )
 
     private val flatMemes = listOf(
@@ -93,7 +157,25 @@ object MemeManager {
         "Volatility is dead",
         "Are we there yet?",
         "Patiently waiting for the breakout",
-        "Maximum sideways pain"
+        "Maximum sideways pain",
+        "TOUCH GRASS",
+        "STABLECOIN",
+        "FLATLINE",
+        "ZERO VOL",
+        "BOTS ONLY",
+        "CHART FROZE",
+        "STILL 69K",
+        "PAUSE BLOCK",
+        "CRAB LIFE",
+        "NAP TIME",
+        "TICK TOCK",
+        "CRAB DANCE",
+        "NO SIGNALS",
+        "STUCK HERE",
+        "SIDEWAYS",
+        "CHART SLEEP",
+        "NO VOLATILE",
+        "DRY PAINT"
     )
 
     fun getMemePhrase(percent: Double, currentPrice: Double, language: String): String {
@@ -107,4 +189,30 @@ object MemeManager {
         val index = hash % phrases.size
         return phrases[index]
     }
+
+    fun wrapText(text: String, maxLineLength: Int): String {
+        if (text.length <= maxLineLength) return text
+        val words = text.split(" ")
+        val sb = StringBuilder()
+        var currentLineLength = 0
+        for (i in words.indices) {
+            val word = words[i]
+            val addedLength = word.length + (if (currentLineLength > 0) 1 else 0)
+            if (currentLineLength + addedLength <= maxLineLength) {
+                if (currentLineLength > 0) {
+                    sb.append(" ")
+                }
+                sb.append(word)
+                currentLineLength += addedLength
+            } else {
+                if (currentLineLength > 0) {
+                    sb.append("\n")
+                }
+                sb.append(word)
+                currentLineLength = word.length
+            }
+        }
+        return sb.toString()
+    }
 }
+

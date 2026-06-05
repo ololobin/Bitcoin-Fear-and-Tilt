@@ -18,6 +18,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.theme.*
 
@@ -80,7 +82,11 @@ fun LcdDisplay(
     modifier: Modifier = Modifier,
     label: String = "",
     value: String,
-    valueColor: Color = LcdGlowText
+    valueColor: Color = LcdGlowText,
+    maxLines: Int = 1,
+    softWrap: Boolean = false,
+    style: TextStyle = MaterialTheme.typography.displayLarge,
+    textAlign: TextAlign = TextAlign.Start
 ) {
     Column(
         modifier = modifier
@@ -101,10 +107,12 @@ fun LcdDisplay(
         }
         Text(
             text = value,
-            style = MaterialTheme.typography.displayLarge,
+            style = style,
             color = valueColor,
-            maxLines = 1,
-            softWrap = false
+            maxLines = maxLines,
+            softWrap = softWrap,
+            textAlign = textAlign,
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }

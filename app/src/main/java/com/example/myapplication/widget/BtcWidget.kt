@@ -41,6 +41,7 @@ import androidx.glance.layout.ContentScale
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
+import androidx.glance.text.TextAlign
 import androidx.glance.unit.ColorProvider
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
@@ -75,6 +76,7 @@ class BtcWidget : GlanceAppWidget() {
             val color = getThemeColor(settings, percent)
             val fngColor = getThemeFngColor(settings)
             val memePhrase = MemeManager.getMemePhrase(percent, settings.currentPrice, settings.language)
+            val priceStr = formatPrice(settings.currentPrice)
             
             val imageResName = getCartImageResName(context, settings, percent)
             val imageRes = context.resources.getIdentifier(imageResName, "drawable", context.packageName).let {
@@ -97,6 +99,10 @@ class BtcWidget : GlanceAppWidget() {
             
             // Determine adaptive layout direction based on aspect ratio
             val isHorizontal = width >= height * 1.3f
+            
+            val wrappedMeme = remember(memePhrase, priceStr) {
+                MemeManager.wrapText(memePhrase, priceStr.length.coerceAtLeast(6) * 2)
+            }
             
             // Scale text sizes dynamically with the widget height (compact multipliers)
             val dynamicPriceSize = if (isHorizontal) {
@@ -154,7 +160,7 @@ class BtcWidget : GlanceAppWidget() {
                             horizontalAlignment = Alignment.Start
                         ) {
                             Text(
-                                text = formatPrice(settings.currentPrice),
+                                text = priceStr,
                                 style = TextStyle(
                                     color = ColorProvider(color),
                                     fontSize = dynamicPriceSize,
@@ -181,7 +187,7 @@ class BtcWidget : GlanceAppWidget() {
                             )
                             Spacer(modifier = GlanceModifier.height(1.dp))
                             Text(
-                                text = "\"$memePhrase\"",
+                                text = wrappedMeme,
                                 style = TextStyle(
                                     color = ColorProvider(Color(0xFFBDC3C7)),
                                     fontSize = dynamicMemeSize,
@@ -219,7 +225,7 @@ class BtcWidget : GlanceAppWidget() {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = formatPrice(settings.currentPrice),
+                                text = priceStr,
                                 style = TextStyle(
                                     color = ColorProvider(color),
                                     fontSize = dynamicPriceSize,
@@ -246,7 +252,7 @@ class BtcWidget : GlanceAppWidget() {
                             )
                             Spacer(modifier = GlanceModifier.height(1.dp))
                             Text(
-                                text = "\"$memePhrase\"",
+                                text = wrappedMeme,
                                 style = TextStyle(
                                     color = ColorProvider(Color(0xFFBDC3C7)),
                                     fontSize = dynamicMemeSize,
