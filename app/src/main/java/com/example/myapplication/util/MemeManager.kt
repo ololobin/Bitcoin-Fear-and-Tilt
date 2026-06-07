@@ -179,10 +179,14 @@ object MemeManager {
     )
 
     fun getMemePhrase(percent: Double, currentPrice: Double, language: String): String {
+        return getMemePhrase(percent, 2.0, currentPrice, language)
+    }
+
+    fun getMemePhrase(percent: Double, speedThreshold: Double, currentPrice: Double, language: String): String {
         val phrases = when {
+            abs(percent) <= speedThreshold -> flatMemes
             percent > 0.0 -> pumpMemes
-            percent < 0.0 -> dumpMemes
-            else -> flatMemes
+            else -> dumpMemes
         }
 
         val hash = abs(currentPrice.toString().hashCode())

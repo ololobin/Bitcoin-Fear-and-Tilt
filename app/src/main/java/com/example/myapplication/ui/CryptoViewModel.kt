@@ -130,6 +130,7 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
             appSettingsManager.updateIsWidgetBackgroundTransparent(false)
             appSettingsManager.updateLanguage("en")
             appSettingsManager.updateThresholds(24, 39, 59, 74, 100)
+            appSettingsManager.resetMemePhrase()
             BtcWidget().updateAll(getApplication())
         }
     }

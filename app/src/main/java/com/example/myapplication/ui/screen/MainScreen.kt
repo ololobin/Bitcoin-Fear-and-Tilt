@@ -72,7 +72,7 @@ fun MainScreen(
     val imageRes = getCartImageRes(context, settings, percent)
     val classification = getSentimentClassification(context, settings.fngValue, settings)
     val themeColor = getSentimentColor(settings, percent)
-    val memePhrase = MemeManager.getMemePhrase(percent, settings.currentPrice, settings.language)
+    val memePhrase = settings.memePhrase
 
     Box(
         modifier = Modifier
@@ -294,6 +294,9 @@ fun getSentimentClassification(context: Context, fngValue: Int, settings: AppSet
 }
 
 fun getSentimentColor(settings: AppSettings, percent: Double): Color {
+    if (abs(percent) <= settings.speedThresholdX) {
+        return SentimentNeutral
+    }
     val isGreen = percent > 0.0
     val isRed = percent < 0.0
     
@@ -317,7 +320,7 @@ fun getCartImageRes(context: Context, settings: AppSettings, percent: Double): I
         if (resId != 0) return resId
     }
 
-    val isFast = abs(percent) >= settings.speedThresholdX
+    val isFast = abs(percent) > settings.speedThresholdX
     val prefix = if (isFast) "fast_" else "slow_"
     
     val sentimentStr = when {

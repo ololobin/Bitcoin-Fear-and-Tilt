@@ -75,7 +75,7 @@ class BtcWidget : GlanceAppWidget() {
             val angle = -(percent.toFloat() * settings.sensitivityK).coerceIn(-89f, 89f)
             val color = getThemeColor(settings, percent)
             val fngColor = getThemeFngColor(settings)
-            val memePhrase = MemeManager.getMemePhrase(percent, settings.currentPrice, settings.language)
+            val memePhrase = settings.memePhrase
             val priceStr = formatPrice(settings.currentPrice)
             
             val imageResName = getCartImageResName(context, settings, percent)
@@ -313,6 +313,10 @@ fun calculatePriceChangePercent(settings: AppSettings): Double {
 }
 
 fun getThemeColor(settings: AppSettings, percent: Double): Color {
+    if (abs(percent) <= settings.speedThresholdX.toDouble()) {
+        return Color(0xFF95A5A6)    // Grey
+    }
+    
     val isGreen = percent > 0.0
     val isRed = percent < 0.0
     
@@ -361,7 +365,7 @@ fun getCartImageResName(context: Context, settings: AppSettings, percent: Double
         return "fast_extreme_big_price"
     }
 
-    val isFast = abs(percent) >= settings.speedThresholdX
+    val isFast = abs(percent) > settings.speedThresholdX
     val prefix = if (isFast) "fast_" else "slow_"
     
     val sentimentStr = when {

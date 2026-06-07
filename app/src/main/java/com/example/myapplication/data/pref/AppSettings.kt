@@ -7,6 +7,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.io.IOException
+import com.example.myapplication.util.MemeManager
 
 enum class ColorMode {
     SENTIMENT, PRICE_MOVEMENT
@@ -51,7 +52,8 @@ data class AppSettings(
     val coinApiKey: String = "",
     val isColorInverted: Boolean = false,
     val isWidgetBackgroundTransparent: Boolean = false,
-    val language: String = "en"
+    val language: String = "en",
+    val memePhrase: String = "Study Bitcoin."
 )
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "btc_fear_and_tilt_settings")
@@ -84,6 +86,7 @@ class AppSettingsManager(private val context: Context) {
         private val KEY_IS_COLOR_INVERTED = booleanPreferencesKey("is_color_inverted")
         private val KEY_IS_WIDGET_BACKGROUND_TRANSPARENT = booleanPreferencesKey("is_widget_background_transparent")
         private val KEY_LANGUAGE = stringPreferencesKey("language")
+        private val KEY_MEME_PHRASE = stringPreferencesKey("meme_phrase")
     }
 
     val settingsFlow: Flow<AppSettings> = context.dataStore.data
@@ -113,7 +116,8 @@ class AppSettingsManager(private val context: Context) {
                 coinApiKey = preferences[KEY_COIN_API_KEY] ?: "",
                 isColorInverted = preferences[KEY_IS_COLOR_INVERTED] ?: false,
                 isWidgetBackgroundTransparent = preferences[KEY_IS_WIDGET_BACKGROUND_TRANSPARENT] ?: false,
-                language = preferences[KEY_LANGUAGE] ?: "en"
+                language = preferences[KEY_LANGUAGE] ?: "en",
+                memePhrase = preferences[KEY_MEME_PHRASE] ?: "Study Bitcoin."
             )
         }
 
@@ -190,6 +194,42 @@ class AppSettingsManager(private val context: Context) {
             preferences[KEY_PRICE_30M] = price30m
             preferences[KEY_PRICE_24H] = price24h
             preferences[KEY_PRICE_START_OF_DAY] = priceStartOfDay
+            
+            // Recalculate and cache meme phrase based on the updated prices and current settings
+            val timeframeVal = preferences[KEY_TIMEFRAME] ?: Timeframe.T_24H.value
+            val timeframe = Timeframe.fromValue(timeframeVal)
+            val basePrice = when (timeframe) {
+                Timeframe.T_30M -> price30m
+                Timeframe.T_24H -> price24h
+                Timeframe.START_OF_DAY -> priceStartOfDay
+            }
+            val percent = if (basePrice > 0.0) {
+                ((currentPrice - basePrice) / basePrice) * 100.0
+            } else {
+                0.0
+            }
+            val speedThreshold = preferences[KEY_SPEED_THRESHOLD_X] ?: 2.0f
+            val language = preferences[KEY_LANGUAGE] ?: "en"
+            
+            val newMemePhrase = MemeManager.getMemePhrase(
+                percent = percent,
+                speedThreshold = speedThreshold.toDouble(),
+                currentPrice = currentPrice,
+                language = language
+            )
+            preferences[KEY_MEME_PHRASE] = newMemePhrase
+        }
+    }
+
+    suspend fun updateMemePhrase(memePhrase: String) {
+        context.dataStore.edit { preferences ->
+            preferences[KEY_MEME_PHRASE] = memePhrase
+        }
+    }
+
+    suspend fun resetMemePhrase() {
+        context.dataStore.edit { preferences ->
+            preferences[KEY_MEME_PHRASE] = "Study Bitcoin."
         }
     }
 
